@@ -5,7 +5,7 @@ Player::Player(b2World &world, FloatRect rect,double x,double y):x(x),y(y), rect
 	dx = 0;
 	dy = 0;
 	speed = 5;
-	speed_up = -9;
+	speed_up = -10;
 	speed_animation = 0.02;
 	kilkist_cadriv = 6;
 	number_cadr = 0;

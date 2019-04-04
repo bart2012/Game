@@ -7,6 +7,7 @@
 // 4 - стіна
 // 5 - підйом
 // 6 - спуск
+// 7 - яма
 Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(number)
 {
 	if (number == 1 || number == 2 || number == 4)
@@ -53,6 +54,18 @@ Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(numbe
 		b2Shape.Set(vertices, 4);
 		b2Element = world.CreateBody(&b2Def);
 		b2Element->CreateFixture(&b2Shape, 0);
+	}
+	if (number == 7)
+	{
+		b2BodyDef b2Def;
+		b2Def.position.Set((rect.left + rect.width / 2.f) / m, (rect.top + rect.height / 2.f) / m);
+		b2Element = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(rect.width / 2.f / m, rect.height / 2.f / m);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Element->CreateFixture(&b2Fix);
 	}
 }
 
