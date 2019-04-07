@@ -1,15 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include "Box2D/Box2D.h"
-#include "Player.h"
-#include "Coins.h"
-#include "Camera.h"
+#include <vector>
 #include <conio.h>
 #include <string>
 #include <iostream>
-#include "Location.h"
-#include "Player.h"
-#include <vector>
-#include "Ground.h"
+
+#include "Level.h"
+#include "Menu.h"
+#include "Game.h"
+#include "Camera.h"
 using namespace sf;
 
 
@@ -26,22 +25,26 @@ int main()
 	b2Vec2 gravity(0.f, 3.f);
 	b2World world(gravity);
 	RenderWindow window(VideoMode(1366, 768), "Game");
-	Player player(world, FloatRect(0, 227, 112, 199), 1366 / 2.f, 402);
 	Camera camera;
-	Location *location = new Location(world,1);
+	Game game;
+	Menu menu(window, "1");
+	Level *level = new Level(world,1);
 	while (window.isOpen())
 	{
-		world.Step(1 / 60.f, 8, 3);
-		player.keyPressed();
 		Event e;
 		while (window.pollEvent(e));
 		{
 			if (e.type == Event::Closed)
 				window.close();
 		}
-		location->loc_update(world, player);
-		camera.draw(world, window, player,location->coins, location->ground);
+		world.Step(1 / 60.f, 8, 3);
+		game.logic(world, level);
+		/*if (Mouse::isButtonPressed(Mouse::Left))
+			std::cout << "1";*/
+		//menu.kliled(window);
+		//menu.draw(window);
+		camera.draw(world, window, level);
 	}
-	delete location;
+	delete level;
 	return 0;
 }

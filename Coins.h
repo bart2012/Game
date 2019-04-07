@@ -1,7 +1,7 @@
-#pragma once
+#ifndef COINS_H
+#define COINS_H
 #include  "Box2D/Box2D.h"
 #include <SFML/Graphics.hpp>
-#include <string>
 using namespace sf;
 class Coins
 {
@@ -15,4 +15,6 @@ public:
 	~Coins();
 private:
 };
+
+#endif
 

@@ -15,35 +15,21 @@ Player::Player(b2World &world, FloatRect rect,double x,double y):x(x),y(y), rect
 	sPlayer.setPosition(x, y);
 	sPlayer.setOrigin(rect.width / 2.f, rect.height / 2.f);
 	b2BodyDef b2DefPlayer;
+	b2DefPlayer.fixedRotation = true;
 	b2DefPlayer.type = b2_dynamicBody;
+	//b2DefPlayer.linearDamping = 0.1;
 	b2DefPlayer.position.Set(x / m, y / m);
 	b2Player = world.CreateBody(&b2DefPlayer);
 	b2PolygonShape b2ShapePlayerP;
 	b2ShapePlayerP.SetAsBox(rect.width / 2.f / m, rect.height / 2.f / m);
-	b2Player->CreateFixture(&b2ShapePlayerP, 1);
+	b2FixtureDef b2FixPlayer;
+	b2FixPlayer.density = 1.0;
+	b2FixPlayer.friction = 0.3;
+	b2FixPlayer.shape = &b2ShapePlayerP;
+	b2Player->CreateFixture(&b2FixPlayer);
 	b2Player->SetUserData(&pl);
 }
 
-void Player::keyPressed()
-{
-	b2Vec2 vecspeed = b2Player->GetLinearVelocity();
-	std::cout <<"s "<<"  "<< vecspeed.x << "  " << vecspeed.y << std::endl;
-	if (Keyboard::isKeyPressed(Keyboard::D))
-		dx = speed;
-	if (Keyboard::isKeyPressed(Keyboard::A))
-		dx = -speed;
-	//b2Vec2 vecspeed = b2Player->GetLinearVelocity();
-	/*if (vecspeed.y < 0 && (vecspeed.y > 0.0001 || vecspeed.y > -0.0001))
-		vecspeed.y = 0;*/
-	if (Keyboard::isKeyPressed(Keyboard::W)&&vecspeed.y == 0)
-	{
-		dy = speed_up;
-	}
-	if (!Keyboard::isKeyPressed(Keyboard::D) && !Keyboard::isKeyPressed(Keyboard::A))
-		b2Player->SetLinearVelocity(b2Vec2(0, vecspeed.y));
-	if (dx != 0 || dy != 0)
-		move();
-}
 
 void Player::move()
 {
@@ -51,7 +37,7 @@ void Player::move()
 	if (dy < 0)
 	{
 		b2Player->SetLinearVelocity(b2Vec2(vecspeed.x,speed_up));
-		dy = 0.00000000000000000000000f;
+		dy = 0;
 	}
 	if (dx != 0)
 	{
@@ -69,7 +55,7 @@ void Player::move()
 			sPlayer.setTextureRect(IntRect(rect.width*int(number_cadr), rect.top, rect.width, rect.height));
 		else
 			sPlayer.setTextureRect(IntRect(rect.width*int(number_cadr+1), rect.top, -rect.width, rect.height));
-		dx = 0.00000000000000000000000000f;
+		dx = 0;
 	}
 
 

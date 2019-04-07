@@ -123,16 +123,21 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coins.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="Location.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Coins.h" />
+    <ClInclude Include="doublenumberssupport.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Ground.h" />
-    <ClInclude Include="Location.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
