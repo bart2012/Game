@@ -16,9 +16,8 @@ public:
 	char vector;
 	b2Body *b2Body;
 	FloatRect rect;
-	std::string platform = "LPlatform";
 private:
-	double  m = 30;
+	float scale = 30;
 };
 
 #endif

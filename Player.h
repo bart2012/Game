@@ -8,13 +8,12 @@ class Player
 {
 public:
 	Texture tPlayer;
-	Player(b2World &world, FloatRect rect, double x, double y);
-	std::string pl = "player";
+	Player(b2World &world, FloatRect rect, float x, float y);
 	FloatRect rect;
 	Sprite sPlayer;
 	b2Body *b2Player;
-	double x = 0;
-	double y{ 1 };
+	float x;
+	float y;
 	double dx;
 	double dy;
 	double speed;
@@ -24,8 +23,10 @@ public:
 private:
 	double speed_animation;
 	double number_cadr;
-	double  m = 30.f;
+	float scale = 30;
 	int kilkist_cadriv;
+	void creatb2Body(b2World &world);
+	void creatGrafic();
 };
 
 

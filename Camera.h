@@ -14,7 +14,7 @@ public:
 	void draw(b2World &world, RenderWindow &window, Level *level);
 	~Camera();
 private:
-	double m = 30.f;
+	float scale = 30;
 	float offsetX = 0;
 	float offsetY = 0;
 	Sprite sCoins, sGround,sPlatform, sRocket, sStar, sMountain, sLocation, sFGoru, sFPlanet, sFStars, sFpolosky, sStina, sFGoruPid, sFGoruSpusk, sSpusk, sPid;

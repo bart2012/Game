@@ -1,20 +1,21 @@
 #ifndef GAME_H
 #define GAME_H
 #include "Level.h"
-//#include "doublenumberssupport.h"
+
 class Game
 {
 public:
-	void logic(b2World &world,Level *level);
-	Game();
+	void logic(b2World &world);
+	Game(b2World &world);
+	Level *level;
 	~Game();
 private:
-	void logicCoin(b2World &world,Level *level);
-	void logicMoveLPlatrotm (b2World &world,Level *level);
-	void logicYama(b2World &world,Level *level);
-	void keyPressed(Level *level);
-	double m = 30;
-	int score{ 0 };
+	void logicCoin(b2World &world);
+	void logicMoveLPlatrotm ();
+	void logicChasm();
+	void keyPressed();
+	float scale = 30;
+	int score { 0 };
 
 };
 

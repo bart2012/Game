@@ -1,35 +1,42 @@
 #include "Player.h"
 
-Player::Player(b2World &world, FloatRect rect,double x,double y):x(x),y(y), rect(rect)
+Player::Player(b2World &world, FloatRect rect,float x, float y):x(x),y(y), rect(rect)
 {
 	dx = 0;
 	dy = 0;
 	speed = 5;
-	speed_up = -10;
+	speed_up = -9;
 	speed_animation = 0.02;
 	kilkist_cadriv = 6;
 	number_cadr = 0;
+	creatb2Body(world);
+	creatGrafic();
+}
+
+void Player::creatb2Body(b2World &world)
+{
+	b2BodyDef b2DefPlayer;
+	b2DefPlayer.fixedRotation = true;
+	b2DefPlayer.type = b2_dynamicBody;
+	b2DefPlayer.position.Set(x / scale, y / scale);
+	b2Player = world.CreateBody(&b2DefPlayer);
+	b2PolygonShape b2ShapePlayerP;
+	b2ShapePlayerP.SetAsBox(rect.width / 2.f / scale, rect.height / 2.f / scale);
+	b2FixtureDef b2FixPlayer;
+	b2FixPlayer.density = 1.0f;
+	b2FixPlayer.friction = 0.3f;
+	b2FixPlayer.shape = &b2ShapePlayerP;
+	b2Player->CreateFixture(&b2FixPlayer);
+}
+
+void Player::creatGrafic()
+{
 	tPlayer.loadFromFile("D:/Game/character/all.png");
 	sPlayer.setTexture(tPlayer);
 	sPlayer.setTextureRect(IntRect(rect));
 	sPlayer.setPosition(x, y);
 	sPlayer.setOrigin(rect.width / 2.f, rect.height / 2.f);
-	b2BodyDef b2DefPlayer;
-	b2DefPlayer.fixedRotation = true;
-	b2DefPlayer.type = b2_dynamicBody;
-	//b2DefPlayer.linearDamping = 0.1;
-	b2DefPlayer.position.Set(x / m, y / m);
-	b2Player = world.CreateBody(&b2DefPlayer);
-	b2PolygonShape b2ShapePlayerP;
-	b2ShapePlayerP.SetAsBox(rect.width / 2.f / m, rect.height / 2.f / m);
-	b2FixtureDef b2FixPlayer;
-	b2FixPlayer.density = 1.0;
-	b2FixPlayer.friction = 0.3;
-	b2FixPlayer.shape = &b2ShapePlayerP;
-	b2Player->CreateFixture(&b2FixPlayer);
-	b2Player->SetUserData(&pl);
 }
-
 
 void Player::move()
 {

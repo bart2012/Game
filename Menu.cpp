@@ -81,14 +81,14 @@ Menu::Menu(sf::RenderWindow &window, std::string type)
 void Menu::draw(sf::RenderWindow &window)
 {
 	window.clear();
-	if (active_menu == 1)
-	{
+	//if (active_menu == 1)
+	//{
 		window.draw(sFon);
 		window.draw(sBNewGame);
 		window.draw(sBLvl);
 		window.draw(sBSettings);
 		window.draw(sBExit);
-	}
+	//}
 	if (active_menu == 2)
 		for (int i =0;i<2;i++)
 

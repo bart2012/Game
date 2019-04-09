@@ -4,6 +4,9 @@
 
 Camera::Camera()
 {
+	double j = 100;
+	float i = static_cast<float>(j);
+		
 	tCoins.loadFromFile("D:/Game/zagEl/moon.png");
 
 	tFGoru.loadFromFile("D:/Game/loc0/mountain.png");
@@ -37,7 +40,7 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level)
 {
 	window.clear(Color::Yellow);
 	b2Vec2 pl = level->player->b2Player->GetPosition();
-	offsetX = pl.x*m - 683;
+	offsetX = pl.x*scale - 683;
 	//offsetY = pl.y*m - 525;
 	//for (b2Body *it = world.GetBodyList(); it != 0; it = it->GetNext())
 	//{
@@ -56,10 +59,10 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level)
 	//}
 	b2Vec2  pos = level->player->b2Player->GetPosition();
 	//player.b2Player->SetTransform(pos, 0);
-			double angle = level->player->b2Player->GetAngle();
-			level->player->sPlayer.setPosition(pos.x*m - offsetX, pos.y*m - offsetY+1);
+	//float angle = level->player->b2Player->GetAngle();
+			level->player->sPlayer.setPosition(pos.x*scale - offsetX, pos.y*scale - offsetY+1);
 			//std::cout << "p =" << int(pos.x*m - offsetX) << std::endl;
-			level->player->sPlayer.setRotation(angle * 57);
+		//	level->player->sPlayer.setRotation(angle * 57);
 			window.draw(level->player->sPlayer);
 	for (int i = 0; i < level->coins.size(); i++)
 	{
@@ -81,7 +84,7 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level)
 		if (level->ground[i].number == 3)
 		{
 			pos = level->ground[i].b2Body->GetPosition();
-			sPlatform.setPosition(pos.x*m- level->ground[i].rect.width/2.f - offsetX, pos.y*m - level->ground[i].rect.height / 2.f - offsetY);
+			sPlatform.setPosition(pos.x*scale - level->ground[i].rect.width/2.f - offsetX, pos.y*scale - level->ground[i].rect.height / 2.f - offsetY);
 			window.draw(sPlatform);
 		}
 		if (level->ground[i].number == 4)
@@ -100,17 +103,7 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level)
 			window.draw(sSpusk);
 		}
 	}
-	//window.draw(sMountain);
-	//window.draw(sMCoins);
-	//
-	//window.draw(sRocket);
-	//window.draw(sStar);
-	//window.draw(sPlatform);
-	//window.draw(sKos);
-	//window.draw(sLoc);
 	window.display();
-	//getchar();
-	
 }
 
 Camera::~Camera()

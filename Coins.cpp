@@ -2,14 +2,14 @@
 
 
 
-Coins::Coins(b2World &world, double x, double y):x(x),y(y)
+Coins::Coins(b2World &world, float x, float y):x(x),y(y)
 {
 	b2BodyDef b2DefCoins;
 	b2DefCoins.type = b2_dynamicBody; //check me 
-	b2DefCoins.position.Set(x /m, y /m);
+	b2DefCoins.position.Set(x / scale, y / scale);
 	//b2DefCoins.fixedRotation = true; //check me 
 	b2CircleShape b2ShapeCoins;
-	b2ShapeCoins.m_radius = 22/m;
+	b2ShapeCoins.m_radius = 22/ scale;
 //	b2FixtureDef b2FixCoins;
 //	b2FixCoins.isSensor = true;
 //	b2FixCoins.density = 0;

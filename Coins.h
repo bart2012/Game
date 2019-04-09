@@ -7,13 +7,13 @@ class Coins
 {
 public:
 	b2Body *b2Coins;
-	double  m = 30;
-	double x;
-	double y;
+	float x;
+	float y;
 	std::string p = "coin";
-	Coins(b2World &world, double x, double y);
+	Coins(b2World &world, float x, float y);
 	~Coins();
 private:
+	float scale = 30;
 };
 
 #endif
