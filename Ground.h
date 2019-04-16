@@ -18,6 +18,8 @@ public:
 	FloatRect rect;
 private:
 	float scale = 30;
+	std::string str = "lptop";
+	std::string str1 = "lposn";
 };
 
 #endif

@@ -19,6 +19,9 @@ public:
 	double speed;
 	double speed_up;
 	void move();
+	char direction;
+	bool onGround;
+	void OnGround();
 	~Player();
 private:
 	double speed_animation;
@@ -27,6 +30,8 @@ private:
 	int kilkist_cadriv;
 	void creatb2Body(b2World &world);
 	void creatGrafic();
+	std::string pl = "pverx";
+	std::string pl2 = "pdown";
 };
 
 

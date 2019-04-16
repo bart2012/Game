@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "doublenumberssupport.h"
 
 Player::Player(b2World &world, FloatRect rect,float x, float y):x(x),y(y), rect(rect)
 {
@@ -21,12 +22,21 @@ void Player::creatb2Body(b2World &world)
 	b2DefPlayer.position.Set(x / scale, y / scale);
 	b2Player = world.CreateBody(&b2DefPlayer);
 	b2PolygonShape b2ShapePlayerP;
-	b2ShapePlayerP.SetAsBox(rect.width / 2.f / scale, rect.height / 2.f / scale);
+	b2ShapePlayerP.SetAsBox(rect.width / 2.f / scale, (rect.height / 2.f - 10)/ scale,b2Vec2(0,10 / scale),0);
 	b2FixtureDef b2FixPlayer;
 	b2FixPlayer.density = 1.0f;
-	b2FixPlayer.friction = 0.3f;
+	b2FixPlayer.friction = 0.1f;
+	b2FixPlayer.userData = &pl2;
 	b2FixPlayer.shape = &b2ShapePlayerP;
+	b2PolygonShape b2ShapePlayerP2;
+	b2ShapePlayerP2.SetAsBox(rect.width / 2.f / scale, 10 / scale,b2Vec2(0,-(rect.height/2.f - 10) / scale),0);
+	b2FixtureDef b2FixPlayer2;
+	b2FixPlayer2.density = 1.0f;
+	b2FixPlayer2.friction = 0.1f;
+	b2FixPlayer2.userData = &pl;
+	b2FixPlayer2.shape = &b2ShapePlayerP2;
 	b2Player->CreateFixture(&b2FixPlayer);
+	b2Player->CreateFixture(&b2FixPlayer2);
 }
 
 void Player::creatGrafic()
@@ -66,6 +76,41 @@ void Player::move()
 	}
 
 
+}
+
+void Player::OnGround()
+{
+	b2Vec2 speed = b2Player->GetLinearVelocity();
+	//std::cout << speed.y << std::endl;
+	b2ContactEdge *contactList = b2Player->GetContactList();
+	if (!onGround)
+	{
+		//std::string str = "LPlatform";
+		//b2Vec2 speed = b2Player->GetLinearVelocity();
+		//std::cout << speed.y<<std::endl;
+		if (contactList != nullptr)
+		{
+			std::cout << contactList->contact->GetFixtureA()->GetUserData() << "  1 " << std::endl;
+			std::cout << contactList->contact->GetFixtureB()->GetUserData() << "  2 " << std::endl;
+			std::string* str1 = static_cast<std::string*> (contactList->contact->GetFixtureA()->GetUserData());
+			std::string* str2 = static_cast<std::string*> (contactList->contact->GetFixtureB()->GetUserData());
+			if (str1 != nullptr)
+			std::cout << *str1 << "  1 " << std::endl;
+			//if (str2 != nullptr)
+			//std::cout << *str2 << "  2 " << std::endl;
+			//std::cout << contactList->contact->GetFriction()<< "  3 " << std::endl;
+			if (DoubleCompare::doubleEquals(0, speed.y, 0.55) && contactList->contact->GetFixtureB()->GetUserData() != nullptr)
+			{
+				onGround = true;
+			}
+			if (DoubleCompare::doubleEquals(0, speed.y)&& *str1=="pdown")
+			{
+				onGround = true;
+			}
+		}
+	}
+	if (onGround && contactList == nullptr)
+		onGround = false;
 }
 
 Player::~Player()

@@ -84,12 +84,21 @@ Ground::Ground(b2World &world, FloatRect rect, int number, int t1, int t2, char 
 	b2Def.type = b2_kinematicBody;
 	b2Body = world.CreateBody(&b2Def);
 	b2PolygonShape b2Shape;
-	b2Shape.SetAsBox(rect.width / 2.f / scale, rect.height / 2.f / scale);
+	b2Shape.SetAsBox(rect.width / 2.f / scale, (rect.height-1) / 2.f / scale,b2Vec2(0,0.5 / scale),0);
+	b2PolygonShape b2Shape2;
 	b2FixtureDef b2;
 	b2.density = 0.0;
 	b2.friction = 0.0;
 	b2.shape = &b2Shape;
+	//b2.userData = &str1;
 	b2Body->CreateFixture(&b2);
+	b2Shape2.SetAsBox((rect.width - 0.5) / 2.f / scale, 1 / 2.f / scale, b2Vec2(0, -(rect.height - 1) / 2.f / scale), 0);
+	b2FixtureDef b2fixdef;
+	b2fixdef.density = 0.0;
+	b2fixdef.friction = 1000.0f;
+	b2fixdef.userData = &str;
+	b2fixdef.shape = &b2Shape2;
+	b2Body->CreateFixture(&b2fixdef);
 	if (vector == 'v')
 		b2Body->SetLinearVelocity(b2Vec2(0, 0.5));
 	if (vector == 'b')
