@@ -1,90 +1,86 @@
 #include "Player.h"
 #include "doublenumberssupport.h"
 
-Player::Player(b2World &world, FloatRect rect,float x, float y):x(x),y(y), rect(rect)
+Player::Player(b2World &world, FloatRect rect,float x, float y):_rect(rect)
 {
-	dx = 0;
-	dy = 0;
-	speed = 5;
-	speed_up = -9;
-	speed_animation = 0.02;
+	_speed = 5;
+	_speedUp = -9;
+	_speedAnimation = 0.02;
 	kilkist_cadriv = 6;
-	number_cadr = 0;
-	creatb2Body(world);
-	creatGrafic();
+	_numberCadr = 0;
+	createb2Body(world,x,y);
+	createGrafic(x,y);
 }
 
-void Player::creatb2Body(b2World &world)
+void Player::createb2Body(b2World &world, float x, float y)
 {
 	b2BodyDef b2DefPlayer;
 	b2DefPlayer.fixedRotation = true;
 	b2DefPlayer.type = b2_dynamicBody;
 	b2DefPlayer.position.Set(x / scale, y / scale);
-	b2Player = world.CreateBody(&b2DefPlayer);
+	_b2Player = world.CreateBody(&b2DefPlayer);
 	b2PolygonShape b2ShapePlayerP;
-	b2ShapePlayerP.SetAsBox(rect.width / 2.f / scale, (rect.height / 2.f - 10)/ scale,b2Vec2(0,10 / scale),0);
+	b2ShapePlayerP.SetAsBox(_rect.width / 2.f / scale, (_rect.height / 2.f - 10)/ scale,b2Vec2(0,10 / scale),0);
 	b2FixtureDef b2FixPlayer;
 	b2FixPlayer.density = 1.0f;
 	b2FixPlayer.friction = 0.1f;
 	b2FixPlayer.userData = &pl2;
 	b2FixPlayer.shape = &b2ShapePlayerP;
 	b2PolygonShape b2ShapePlayerP2;
-	b2ShapePlayerP2.SetAsBox(rect.width / 2.f / scale, 10 / scale,b2Vec2(0,-(rect.height/2.f - 10) / scale),0);
+	b2ShapePlayerP2.SetAsBox(_rect.width / 2.f / scale, 10 / scale,b2Vec2(0,-(_rect.height/2.f - 10) / scale),0);
 	b2FixtureDef b2FixPlayer2;
 	b2FixPlayer2.density = 1.0f;
 	b2FixPlayer2.friction = 0.1f;
 	b2FixPlayer2.userData = &pl;
 	b2FixPlayer2.shape = &b2ShapePlayerP2;
-	b2Player->CreateFixture(&b2FixPlayer);
-	b2Player->CreateFixture(&b2FixPlayer2);
+	_b2Player->CreateFixture(&b2FixPlayer);
+	_b2Player->CreateFixture(&b2FixPlayer2);
 }
 
-void Player::creatGrafic()
+void Player::createGrafic(float x, float y)
 {
-	tPlayer.loadFromFile("D:/Game/character/all.png");
-	sPlayer.setTexture(tPlayer);
-	sPlayer.setTextureRect(IntRect(rect));
-	sPlayer.setPosition(x, y);
-	sPlayer.setOrigin(rect.width / 2.f, rect.height / 2.f);
+	_tPlayer.loadFromFile("D:/Game/character/all.png");
+	_sPlayer.setTexture(_tPlayer);
+	_sPlayer.setTextureRect(IntRect(_rect));
+	_sPlayer.setPosition(x, y);
+	_sPlayer.setOrigin(_rect.width / 2.f, _rect.height / 2.f);
 }
 
-void Player::move()
+//void Player::move()
+//{
+//	b2Vec2 vecspeed = _b2Player->GetLinearVelocity();
+//	if (dy < 0)
+//	{
+//		_b2Player->SetLinearVelocity(b2Vec2(vecspeed.x,_speedUp));
+//		dy = 0;
+//	}
+//	if (dx != 0)
+//	{
+//		b2Vec2 vecspeed = _b2Player->GetLinearVelocity();
+//		if (vecspeed.x<3&& vecspeed.x > 3)
+//		_b2Player->SetLinearVelocity(b2Vec2(vecspeed.x + dx, vecspeed.y));
+//		else 
+//			_b2Player->SetLinearVelocity(b2Vec2(dx, vecspeed.y));
+//		b2Player->SetAngularDamping(dx, vecspeed.y);
+//		b2Player->ApplyLinearImpulseToCenter(b2Vec2(dx, vecspeed.y), true);
+//		_numberCadr += _speedAnimation;
+//		if (_numberCadr > kilkist_cadriv)
+//			_numberCadr = 0;
+//		if (dx > 0)
+//			_sPlayer.setTextureRect(IntRect(_rect.width*int(_numberCadr), _rect.top, _rect.width, _rect.height));
+//		else
+//			_sPlayer.setTextureRect(IntRect(_rect.width*int(_numberCadr+1), _rect.top, -_rect.width, _rect.height));
+//		dx = 0;
+//	}
+//
+//
+//}
+
+bool Player::canJump()
 {
-	b2Vec2 vecspeed = b2Player->GetLinearVelocity();
-	if (dy < 0)
-	{
-		b2Player->SetLinearVelocity(b2Vec2(vecspeed.x,speed_up));
-		dy = 0;
-	}
-	if (dx != 0)
-	{
-		b2Vec2 vecspeed = b2Player->GetLinearVelocity();
-		if (vecspeed.x<3&& vecspeed.x > 3)
-		b2Player->SetLinearVelocity(b2Vec2(vecspeed.x + dx, vecspeed.y));
-		else 
-			b2Player->SetLinearVelocity(b2Vec2(dx, vecspeed.y));
-		//b2Player->SetAngularDamping(dx, vecspeed.y);
-		//b2Player->ApplyLinearImpulseToCenter(b2Vec2(dx, vecspeed.y), true);
-		number_cadr += speed_animation;
-		if (number_cadr > kilkist_cadriv)
-			number_cadr = 0;
-		if (dx > 0)
-			sPlayer.setTextureRect(IntRect(rect.width*int(number_cadr), rect.top, rect.width, rect.height));
-		else
-			sPlayer.setTextureRect(IntRect(rect.width*int(number_cadr+1), rect.top, -rect.width, rect.height));
-		dx = 0;
-	}
-
-
-}
-
-void Player::OnGround()
-{
-	b2Vec2 speed = b2Player->GetLinearVelocity();
+	b2Vec2 speed = _b2Player->GetLinearVelocity();
 	//std::cout << speed.y << std::endl;
-	b2ContactEdge *contactList = b2Player->GetContactList();
-	if (!onGround)
-	{
+	b2ContactEdge *contactList = _b2Player->GetContactList();
 		//std::string str = "LPlatform";
 		//b2Vec2 speed = b2Player->GetLinearVelocity();
 		//std::cout << speed.y<<std::endl;
@@ -101,16 +97,89 @@ void Player::OnGround()
 			//std::cout << contactList->contact->GetFriction()<< "  3 " << std::endl;
 			if (DoubleCompare::doubleEquals(0, speed.y, 0.55) && contactList->contact->GetFixtureB()->GetUserData() != nullptr)
 			{
-				onGround = true;
+				return true;
 			}
 			if (DoubleCompare::doubleEquals(0, speed.y)&& *str1=="pdown")
 			{
-				onGround = true;
+				return true;
 			}
 		}
+	if (contactList == nullptr)
+		return false;
+}
+
+void Player::setDirectionRight() 
+{
+	_directionRight=true;
+}
+void Player::setDirectionLeft()
+{
+	_directionRight = false;
+
+}
+bool Player::directionRignt()
+{
+	return _directionRight;
+}
+bool Player::directionLeft()
+{
+	return !_directionRight;
+}
+void Player::jump()
+{
+	b2Vec2 vecspeed = _b2Player->GetLinearVelocity();
+	_b2Player->SetLinearVelocity(b2Vec2(vecspeed.x, _speedUp));
+}
+void Player::goRight()
+{
+	setDirectionRight();
+	b2Vec2 vecspeed = _b2Player->GetLinearVelocity();
+	_b2Player->SetLinearVelocity(b2Vec2(_speed, vecspeed.y));
+	setAnimationCadr();
+	_sPlayer.setTextureRect(IntRect(_rect.width*int(_numberCadr), _rect.top, _rect.width, _rect.height));
+}
+
+void Player::goLeft()
+{
+	setDirectionLeft();
+	b2Vec2 vecspeed = _b2Player->GetLinearVelocity();
+	_b2Player->SetLinearVelocity(b2Vec2(-_speed, vecspeed.y));
+	setAnimationCadr();
+	_sPlayer.setTextureRect(IntRect(_rect.width*int(_numberCadr + 1), _rect.top, -_rect.width, _rect.height));
+
+}
+void Player::gorisontalMoveStop()
+{
+	b2Vec2 vecSpeed = _b2Player->GetLinearVelocity();
+	_b2Player->SetLinearVelocity(b2Vec2(0, vecSpeed.y));
+	_numberCadr = 0;
+	if (directionRignt())
+	{
+		_sPlayer.setTextureRect(IntRect(_rect));
 	}
-	if (onGround && contactList == nullptr)
-		onGround = false;
+	if (directionLeft())
+	{
+		_sPlayer.setTextureRect(IntRect(_rect.width, _rect.top, -_rect.width, _rect.height));
+	}
+}
+void Player::setSpriteKickback()
+{
+
+}
+void Player::setAnimationCadr()
+{
+	_numberCadr += _speedAnimation;
+	if (_numberCadr > kilkist_cadriv)
+		_numberCadr = 0;
+}
+
+Sprite* Player::sprite()
+{
+	return &_sPlayer;
+}
+b2Body* Player::b2body()
+{
+	return _b2Player;
 }
 
 Player::~Player()

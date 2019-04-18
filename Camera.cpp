@@ -39,7 +39,7 @@ Camera::Camera()
 void Camera::draw(b2World &world, RenderWindow &window, Level *level)
 {
 	window.clear(Color::Yellow);
-	b2Vec2 pl = level->player->b2Player->GetPosition();
+	b2Vec2 pl = level->player->b2body()->GetPosition();
 	offsetX = pl.x*scale - 683;
 	//offsetY = pl.y*m - 525;
 	//for (b2Body *it = world.GetBodyList(); it != 0; it = it->GetNext())
@@ -57,13 +57,13 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level)
 	//	}
 
 	//}
-	b2Vec2  pos = level->player->b2Player->GetPosition();
+	b2Vec2  pos = level->player->b2body()->GetPosition();
 	//player.b2Player->SetTransform(pos, 0);
 	//float angle = level->player->b2Player->GetAngle();
-			level->player->sPlayer.setPosition(pos.x*scale - offsetX, pos.y*scale - offsetY+1);
+			level->player->sprite()->setPosition(pos.x*scale - offsetX, pos.y*scale - offsetY+1);
 			//std::cout << "p =" << int(pos.x*m - offsetX) << std::endl;
 		//	level->player->sPlayer.setRotation(angle * 57);
-			window.draw(level->player->sPlayer);
+			window.draw(*level->player->sprite());
 	for (int i = 0; i < level->coins.size(); i++)
 	{
 		sCoins.setPosition(level->coins[i].x - offsetX, level->coins[i].y - offsetY);
@@ -99,10 +99,24 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level)
 		}
 		if (level->ground[i].number == 6)
 		{
+
 			sSpusk.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetY);
 			window.draw(sSpusk);
 		}
 	}
+	//for (int i = 0; i < level->bullet.size(); i++)
+	//{
+	//	b2Vec2 position = level->bullet[i].b2Bullet->GetPosition();
+	//	if (level->bullet[i].direction == 'r')
+	//	{
+	//		sRBullet.setPosition(position.x*scale, position.y*scale);
+	//		window.draw(sRBullet);
+	//	}
+	//	if (level->bullet[i].direction == 'l')
+	//	{
+	//		sLBullet.setPosition(position.x*scale, position.y*scale);
+	//	}
+	//}
 	window.display();
 }
 
