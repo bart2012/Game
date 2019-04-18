@@ -9,7 +9,7 @@ using namespace sf;
 class Camera
 {
 public:
-	Texture tGround, tCoins, tPlatform, tRocket, tFGoru,tFPlanet,tFStars,tFpolosky,tStina,tFGoruPid,tFGoruSpusk,tSpusk,tPid;
+	Texture tLBullet,tRBullet, tGround, tCoins, tPlatform, tRocket, tFGoru,tFPlanet,tFStars,tFpolosky,tStina,tFGoruPid,tFGoruSpusk,tSpusk,tPid;
 	Camera();
 	void draw(b2World &world, RenderWindow &window, Level *level);
 	~Camera();
@@ -17,7 +17,7 @@ private:
 	float scale = 30;
 	float offsetX = 0;
 	float offsetY = 0;
-	Sprite sCoins, sGround,sPlatform, sRocket, sStar, sMountain, sLocation, sFGoru, sFPlanet, sFStars, sFpolosky, sStina, sFGoruPid, sFGoruSpusk, sSpusk, sPid;
+	Sprite sLBullet,sRBullet, sCoins, sGround,sPlatform, sRocket, sStar, sMountain, sLocation, sFGoru, sFPlanet, sFStars, sFpolosky, sStina, sFGoruPid, sFGoruSpusk, sSpusk, sPid;
 };
 
 #endif

@@ -19,8 +19,13 @@ int main()
 	Camera camera;
 	Game game(world);
 	Menu menu(window, "1");
+	b2Timer time;
 	while (window.isOpen())
 	{
+		//std::cout << std::endl;
+		//std::cout << time.GetMilliseconds();
+		//std::cout << std::endl;
+		//time.Reset();
 		Event e;
 		while (window.pollEvent(e));
 		{

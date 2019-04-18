@@ -4,7 +4,7 @@
 
 Level::Level(b2World &world,int location)
 {
-	player = new Player(world, FloatRect(0, 227, 112, 199), 100, 402);
+	player = new Player(world, FloatRect(0, 0, 112, 199), 100, 402);
 	if (location == 1)
 	{
 		coins.push_back(Coins(world, 400, 500));

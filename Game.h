@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 #include "Level.h"
-
 class Game
 {
 public:
@@ -13,9 +12,11 @@ private:
 	void logicCoin(b2World &world);
 	void logicMoveLPlatrotm ();
 	void logicChasm();
-	void keyPressed();
+	void keyPressed(b2World &world);
+	void logicBullet(b2World &world);
 	float scale = 30;
-	int score { 0 };
+	int score = 0;
+	bool canShoot = true;
 
 };
 

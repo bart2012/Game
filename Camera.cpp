@@ -21,6 +21,12 @@ Camera::Camera()
 	tPid.loadFromFile("D:/Game/loc1/підйом.png");
 	tSpusk.loadFromFile("D:/Game/loc1/спуск.png");
 	tFpolosky.loadFromFile("D:/Game/loc0/полоски.png");
+	tRBullet.loadFromFile("D:/Game/character/RBullet.png");
+	tLBullet.loadFromFile("D:/Game/character/LBullet.png");
+	sLBullet.setTexture(tLBullet);
+	sLBullet.setTextureRect(IntRect(0, 11, 24, 6));
+	sRBullet.setTexture(tRBullet);
+	sRBullet.setTextureRect(IntRect(6, 11, 24, 6));
 	sCoins.setTexture(tCoins);
 	sGround.setTexture(tGround);
 	sPlatform.setTexture(tPlatform);
