@@ -20,6 +20,7 @@ private:
 	float scale = 30;
 	std::string str = "lptop";
 	std::string str1 = "lposn";
+	std::string str2 = "ground";
 };
 
 #endif

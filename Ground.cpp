@@ -13,6 +13,7 @@ Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(numbe
 	if (number == 1 || number == 2 || number == 4)
 	{
 		b2BodyDef b2Def;
+		b2Def.type = b2_staticBody;
 		b2Def.position.Set((rect.left + rect.width / 2.f) / scale, (rect.top + rect.height / 2.f) / scale);
 		b2Body = world.CreateBody(&b2Def);
 		b2PolygonShape b2Shape;
@@ -22,6 +23,7 @@ Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(numbe
 		b2.friction = 0.0;
 		b2.shape = &b2Shape;
 		b2Body->CreateFixture(&b2);
+		b2Body->SetUserData(&str2);
 	}
 	if (number == 5)
 	{
@@ -90,7 +92,7 @@ Ground::Ground(b2World &world, FloatRect rect, int number, int t1, int t2, char 
 	b2.density = 0.0;
 	b2.friction = 0.0;
 	b2.shape = &b2Shape;
-	//b2.userData = &str1;
+	b2.userData = &str1;
 	b2Body->CreateFixture(&b2);
 	b2Shape2.SetAsBox((rect.width - 0.5) / 2.f / scale, 1 / 2.f / scale, b2Vec2(0, -(rect.height - 1) / 2.f / scale), 0);
 	b2FixtureDef b2fixdef;
@@ -103,6 +105,7 @@ Ground::Ground(b2World &world, FloatRect rect, int number, int t1, int t2, char 
 		b2Body->SetLinearVelocity(b2Vec2(0, 0.5));
 	if (vector == 'b')
 		b2Body->SetLinearVelocity(b2Vec2(0.5, 0));
+	//b2Body->SetUserData(&str2);
 }
 
 

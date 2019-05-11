@@ -7,10 +7,13 @@ class Bullet
 {
 public:
 	b2Body *b2Bullet;
-	char direction;
-	Bullet(b2World &world,char direction,b2Vec2 position,std::string type);
+	Bullet(b2World &world,b2Vec2 position, bool directionRight);
+	bool directionRignt();
+	bool directionLeft();
+	std::string st = "st";
 	~Bullet();
 private:
+	bool _directionRight;
 	float scale = 30;
 };
 

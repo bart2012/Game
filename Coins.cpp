@@ -16,6 +16,7 @@ Coins::Coins(b2World &world, float x, float y):x(x),y(y)
 //	b2FixCoins.shape = &b2ShapeCoins;
 	b2Coins = world.CreateBody(&b2DefCoins);
 	b2Coins->CreateFixture(&b2ShapeCoins,1.0);
+	b2Coins->SetUserData(&p);
 	//b2Coins->SetUserData(&p);
 }
 

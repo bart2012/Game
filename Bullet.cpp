@@ -2,30 +2,41 @@
 
 
 
-Bullet::Bullet(b2World &world,char direction, b2Vec2 position, std::string type):direction(direction)
+Bullet::Bullet(b2World &world,b2Vec2 position, bool directionRight):_directionRight(directionRight)
 {
 	b2BodyDef b2Def;
 	b2Def.position.Set(position.x, position.y);
-	b2Def.type = b2_kinematicBody;
+	b2Def.type = b2_dynamicBody;
+	b2Def.gravityScale = 0;
 	b2Bullet = world.CreateBody(&b2Def);
 	b2PolygonShape b2Shape;
 	b2Shape.SetAsBox(7 / scale, 3 / scale);
 	b2FixtureDef b2Fix;
 	b2Fix.isSensor = true;
 	b2Fix.density = 1.0;
+	b2Fix.userData = &st;
 	b2Fix.shape = &b2Shape;
 	b2Bullet->CreateFixture(&b2Fix);
-	if (direction == 'r')
+	b2Bullet->SetUserData(&st);
+
+	if (_directionRight)
 	{
-		b2Bullet->SetLinearVelocity(b2Vec2(1, 0));
+		b2Bullet->SetLinearVelocity(b2Vec2(0.5, 0));
 	}
-	if (direction == 'l')
+	if (!_directionRight)
 	{
-		std::cout << "1";
-		b2Bullet->SetLinearVelocity(b2Vec2(-1, 0));
+		b2Bullet->SetLinearVelocity(b2Vec2(-0.5, 0));
 	}
 }
 
+bool Bullet::directionRignt()
+{
+	return _directionRight;
+}
+bool Bullet::directionLeft()
+{
+	return !_directionRight;
+}
 
 Bullet::~Bullet()
 {

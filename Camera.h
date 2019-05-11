@@ -9,15 +9,33 @@ using namespace sf;
 class Camera
 {
 public:
-	Texture tLBullet,tRBullet, tGround, tCoins, tPlatform, tRocket, tFGoru,tFPlanet,tFStars,tFpolosky,tStina,tFGoruPid,tFGoruSpusk,tSpusk,tPid;
+	Texture tFon,tLBullet,tRBullet, tGround, tCoins, tPlatform, tRocket, tFGoru,tFPlanet,tFStars,tFpolosky,tStina,tFGoruPid,tFGoruSpusk,tSpusk,tPid;
 	Camera();
 	void draw(b2World &world, RenderWindow &window, Level *level);
 	~Camera();
 private:
+	class Fon
+	{
+	public:
+		Sprite sprite;
+		float x;
+		float y;
+		Fon (Sprite sprite, float x, float y)
+		{
+			this->sprite = sprite;
+			this->x = x;
+			this->y = y;
+			sprite.setPosition(x, y);
+		}
+	};
 	float scale = 30;
 	float offsetX = 0;
 	float offsetY = 0;
-	Sprite sLBullet,sRBullet, sCoins, sGround,sPlatform, sRocket, sStar, sMountain, sLocation, sFGoru, sFPlanet, sFStars, sFpolosky, sStina, sFGoruPid, sFGoruSpusk, sSpusk, sPid;
+	Sprite sFon,sLBullet,sRBullet, sCoins, sGround,sPlatform, sRocket, sStar, sMountain, sLocation, sFGoru, sFPlanet, sFStars, sFpolosky, sStina, sFGoruPid, sFGoruSpusk, sSpusk, sPid;
+	void moveFon(Level *level);
+	std::vector <Fon>  goru;
+	std::vector <Fon>  stars;
+	std::vector <Fon>  polosky;
 };
 
 #endif

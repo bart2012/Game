@@ -14,10 +14,11 @@ private:
 	void logicChasm();
 	void keyPressed(b2World &world);
 	void logicBullet(b2World &world);
+	//void collisionBullet(b2World &world);
+	//void destroyBullet();
 	float scale = 30;
 	int score = 0;
 	bool canShoot = true;
-
 };
 
 #endif

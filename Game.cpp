@@ -31,23 +31,36 @@ void Game::keyPressed(b2World &world)
 	//	level->player->move();
 	//}
 
-	//if (Keyboard::isKeyPressed(Keyboard::RControl)&&canShoot)
-	//{
-	//	level->bullet.push_back(Bullet(world,level->player->direction,level->player->_b2Player->GetPosition(),"q"));
-	//	canShoot = false;
-	//}
-	//if (!canShoot&&!Keyboard::isKeyPressed(Keyboard::RControl))
-	//{
-	//	canShoot = true;
-	//}
+	if (Keyboard::isKeyPressed(Keyboard::RControl)&&canShoot)
+	{
+		level->player->pistol(world, level->bullet);
+		canShoot = false;
+	}
+	if (!canShoot&&!Keyboard::isKeyPressed(Keyboard::RControl))
+	{
+		canShoot = true;
+	}
 }
 
 void Game::logic(b2World &world)
 {
 	keyPressed(world);
+	logicBullet(world);
 	logicCoin(world);
 	logicMoveLPlatrotm();
 	logicChasm();
+	for (int i = 0; i < level->monster.size(); i++)
+	{
+		if (level->monster[i]->reaction(level->player))
+		{
+			level->monster[i]->pistol(world, level->bullet);
+
+		}
+		else
+		{
+			level->monster[i]->update();
+		}
+	}
 }
 
 void Game::logicCoin(b2World &world)
@@ -123,9 +136,109 @@ void Game::logicBullet(b2World &world)
 {
 	for (int i = 0; i < level->bullet.size(); i++)
 	{
-
+		b2Vec2 posBullet = level->bullet[i].b2Bullet->GetPosition();
+		b2Vec2 posPlayer = level->player->b2body()->GetPosition();
+		posBullet.x *= scale;
+		posBullet.y *= scale;
+		posPlayer.x *= scale;
+		posPlayer.y *= scale;
+		if (posBullet.x > posPlayer.x + 700 || posBullet.x < posPlayer.x - 700)
+		{
+			world.DestroyBody(level->bullet[i].b2Bullet);
+			level->bullet.erase(level->bullet.begin() + i);
+			i--;
+			break;
+		}
+		//std::cout << pos.x*scale << "x" << std::endl;
+		//std::cout << pos.y*scale << "y" << std::endl;
+		for (b2ContactEdge *ContactList = level->bullet[i].b2Bullet->GetContactList(); ContactList != nullptr; ContactList = ContactList->next)
+		{
+			if (ContactList->other == level->player->b2body() && ContactList->contact->IsTouching())
+			{
+				world.DestroyBody(level->bullet[i].b2Bullet);
+				level->player->b2body()->SetTransform(b2Vec2(100/scale,400/scale),0);
+				level->bullet.erase(level->bullet.begin() + i);
+				i--;
+				break;
+			}
+			for (int j = 0; j < level->monster.size(); j++)
+			{
+				if (ContactList->other == level->monster[j]->b2body() && ContactList->contact->IsTouching())
+				{
+					world.DestroyBody(level->bullet[i].b2Bullet);
+					world.DestroyBody(level->monster[j]->b2body());
+					level->bullet.erase(level->bullet.begin() + i);
+					level->monster.erase(level->monster.begin() + j);
+					ContactList->other =  nullptr;
+					i--;
+					break;
+				}
+			}
+			if (ContactList->other == nullptr)
+				break;
+			for (int j = 0; j < level->bullet.size(); j++)
+			{
+				if (i!=j&&ContactList->other == level->bullet[j].b2Bullet && ContactList->contact->IsTouching())
+				{
+					world.DestroyBody(level->bullet[i].b2Bullet);
+					world.DestroyBody(level->bullet[j].b2Bullet);
+					level->bullet.erase(level->bullet.begin() + i);
+					level->bullet.erase(level->bullet.begin() + j-1);
+					ContactList->other = nullptr;
+					i--;
+					break;
+				}
+			}			
+			if (ContactList->other == nullptr)
+				break;
+			//std::string *userData = static_cast<std::string*>(ContactList->other->GetUserData());
+			//std::string *userData1 = static_cast<std::string*>(ContactList->other->GetUserData());
+			/*std::string* str1 = static_cast<std::string*> (ContactList->other->GetUserData());
+			std::string* str2 = static_cast<std::string*> (ContactList->other->GetUserData());
+			if (str1  != nullptr && *str1 == "st")
+				std::cout  << "  1 " << std::endl;
+			if (str2 != nullptr && *str2 == "st")
+				std::cout  << "  1 " << std::endl;*/
+			//if (str2 != nullptr)
+			//	std::cout << *str2 << "  2 " << std::endl;
+			//if (userData != nullptr&&userData1 != nullptr)
+			//{
+			//	//std::cout << "1";
+			//}
+			if (ContactList->contact->GetFixtureA()->GetBody()->GetUserData() != nullptr&&ContactList->contact->IsTouching())
+			{
+					std::cout << "2";
+					//if (userData != nullptr&&userData1 != nullptr)
+					//{
+					//	std::cout << *userData << std::endl;
+					//	std::cout << *userData1 << std::endl;
+					//}
+					world.DestroyBody(level->bullet[i].b2Bullet);
+					level->bullet.erase(level->bullet.begin() + i);
+					i--;
+					//std::string* str1 = static_cast<std::string*> (ContactList->contact->GetFixtureA()->GetUserData());
+					//std::string* str2 = static_cast<std::string*> (ContactList->contact->GetFixtureB()->GetUserData());
+					//if (str1 != nullptr)
+					//	std::cout << *str1 << "  1 " << std::endl;
+					//if (str2 != nullptr)
+					//std::cout << *str2 << "  2 " << std::endl;
+					break;
+			}
+		}
 	}
 }
+
+//void Game::collisionBullet(b2World &world)
+//{
+//	for (int i = 0; i < level->bullet.size(); i++)
+//	{
+//
+//	}
+//}
+//void Game::destroyBullet()
+//{
+//
+//}
 
 Game::~Game()
 {

@@ -7,6 +7,7 @@
 #include"Ground.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Monster.h"
 using namespace sf;
 
 class Level
@@ -16,6 +17,8 @@ public:
 	std::vector<Coins> coins;
 	std::vector<Ground> ground;
 	std::vector<Bullet> bullet;
+	std::vector<Monster*> monster;
+	Monster *m;
 	Level(b2World &world,int location);
 	~Level();
 };

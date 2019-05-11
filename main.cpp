@@ -13,8 +13,7 @@ using namespace sf;
 
 int main()
 {
-	b2Vec2 gravity(0.f, 3.f);
-	b2World world(gravity);
+	b2World world(b2Vec2(0.f,3.f));
 	RenderWindow window(VideoMode(1366, 768), "Game");
 	Camera camera;
 	Game game(world);
@@ -22,10 +21,9 @@ int main()
 	b2Timer time;
 	while (window.isOpen())
 	{
-		//std::cout << std::endl;
-		//std::cout << time.GetMilliseconds();
-		//std::cout << std::endl;
-		//time.Reset();
+		std::cout << std::endl;
+		std::cout << time.GetMilliseconds();
+		std::cout << std::endl;
 		Event e;
 		while (window.pollEvent(e));
 		{
@@ -34,6 +32,7 @@ int main()
 		}
 		game.logic(world);
 		world.Step(1 / 60.f, 8, 3);
+		time.Reset();
 		/*if (Mouse::isButtonPressed(Mouse::Left))
 			std::cout << "1";*/
 		//menu.kliled(window);

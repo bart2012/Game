@@ -10,10 +10,10 @@ Menu::Menu(sf::RenderWindow &window, std::string type)
 	tBLvl.loadFromFile("D:/Game/menu/головне/обратирівень.png");
 	tBSettings.loadFromFile("D:/Game/menu/головне/налаштування.png");
 
-	tBSoundOn.loadFromFile("D:/Game/menu/головне/налаштування/звукивкл.png");
-	tBSoundOff.loadFromFile("D:/Game/menu/головне/налаштування/звукивикл.png");
-	tBMusicOn.loadFromFile("D:/Game/menu/головне/налаштування/музикавкл.png");
-	tBMusicOff.loadFromFile("D:/Game/menu/головне/налаштування/музикавикл.png");
+	//tBSoundOn.loadFromFile("D:/Game/menu/головне/налаштування/звукивкл.png");
+	//tBSoundOff.loadFromFile("D:/Game/menu/головне/налаштування/звукивикл.png");
+	//tBMusicOn.loadFromFile("D:/Game/menu/головне/налаштування/музикавкл.png");
+	//tBMusicOff.loadFromFile("D:/Game/menu/головне/налаштування/музикавикл.png");
 
 
 
