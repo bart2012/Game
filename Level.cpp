@@ -19,7 +19,7 @@ Level::Level(b2World &world,int location)
 		ground.push_back(Ground(world, FloatRect(1566, 325, 121, 39), 2));
 		ground.push_back(Ground(world, FloatRect(1966, 325, 121, 39), 3, 1766, 2166, 'b'));
 		ground.push_back(Ground(world, FloatRect(1166, 325, 121, 39), 3, 125, 425, 'v'));
-		ground.push_back(Ground(world, FloatRect(-405-1366, 120, 405, 755), 4));
+		ground.push_back(Ground(world, FloatRect(-405-1366, 13, 405, 755), 4));
 		ground.push_back(Ground(world, FloatRect(-1200, 325, 121, 39), 2));
 		ground.push_back(Ground(world, FloatRect(1366*2.f, 625, 1366, 111), 1));
 		ground.push_back(Ground(world, FloatRect(1366 * 3.f, 625, 1366, 111), 1));

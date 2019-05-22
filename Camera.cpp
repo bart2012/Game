@@ -176,15 +176,15 @@ void Camera::moveFon(Level *level)
 {
 	for (int i = 0; i < polosky.size(); i++)
 	{
-		polosky[i].sprite.setPosition(polosky[i].x - (offsetX * 0.1f), polosky[i].y);
+		polosky[i].sprite.setPosition(polosky[i].x - (offsetX * 0.1f), polosky[i].y-offsetY);
 	}
 	for (int i = 0; i < stars.size(); i++)
 	{
-		stars[i].sprite.setPosition(stars[i].x - (offsetX * 0.15f), stars[i].y);
+		stars[i].sprite.setPosition(stars[i].x - (offsetX * 0.15f), stars[i].y - offsetY);
 	}
 	for (int i = 0; i < goru.size(); i++)
 	{
-		goru[i].sprite.setPosition(goru[i].x - (offsetX * 0.2f), goru[i].y);
+		goru[i].sprite.setPosition(goru[i].x - (offsetX * 0.2f), goru[i].y - offsetY);
 	}
 
 	for (int i = 0; i < level->ground.size(); i++)
@@ -197,38 +197,57 @@ void Camera::moveFon(Level *level)
 				{
 					b2Vec2 posP = level->player->b2body()->GetPosition();
 					b2Vec2 posG = level->ground[i].b2Body->GetPosition();
-					if ( posG.y*scale - posP.y*scale >  476)
+					if (posG.y*scale - posP.y*scale >  476 && (posG.y*scale + offsetY) >0)
 					{
-						offsetY = -634;
-							polosky.push_back(Fon(sFpolosky, posG.x-202, offsetY*0.7f));
-							polosky[polosky.size() - 1].sprite.setPosition(polosky[polosky.size() - 1].x - offsetX * 0.1f, polosky[polosky.size() - 1].y);
-
-							goru.push_back(Fon(sFGoru, posG.x - 202, offsetY * 0.7f + 212));
-							goru[goru.size() - 1].sprite.setPosition(goru[goru.size() - 1].x - offsetX * 0.2f, goru[goru.size() - 1].y);
-
-							stars.push_back(Fon(sFStars, posG.x - 202, offsetY * 0.7f));
-							stars[stars.size() - 1].sprite.setPosition(stars[stars.size() - 1].x - offsetX * 0.15f, stars[stars.size() - 1].y);
-
+						polosky.clear();
+						goru.clear();
+						stars.clear();
+						offsetY -= 644;
+						polosky.push_back(Fon(sFpolosky, posP.x*scale - 683 - offsetX, offsetY));
+						polosky[0].sprite.setPosition(polosky[0].x, polosky[0].y);
+						
+						goru.push_back(Fon(sFGoru, posP.x*scale - 683 - offsetX, offsetY * 0.8f + 212));
+						goru[0].sprite.setPosition(goru[0].x , goru[0].y);
+						
+						stars.push_back(Fon(sFStars, posP.x*scale - 683 - offsetX, offsetY));
+						stars[0].sprite.setPosition(stars[0].x, stars[0].y);
 					}
 				}
 			}
 		}
 	}
 
+	b2Vec2 posP = level->player->b2body()->GetPosition();
+	if (768 + offsetY - 111 < posP.y*scale - 99.5)
+	{
+   		offsetY += 644;
+		polosky.clear();
+		goru.clear();
+		stars.clear();
+		polosky.push_back(Fon(sFpolosky, posP.x*scale - 683 - offsetX, offsetY));
+		polosky[0].sprite.setPosition(polosky[0].x - offsetX * 0.1f, polosky[0].y);
+
+		goru.push_back(Fon(sFGoru, posP.x*scale - 683 - offsetX, offsetY + 212));
+		goru[0].sprite.setPosition(goru[0].x - offsetX * 0.2f, goru[0].y);
+
+		stars.push_back(Fon(sFStars, posP.x*scale - 683 - offsetX, offsetY));
+		stars[0].sprite.setPosition(stars[0].x - offsetX * 0.15f, stars[0].y);
+	}
+
 
 	if (polosky[polosky.size() - 1].x - offsetX * 0.1f + 1363 < offsetX + 683)
 	{
-		polosky.push_back(Fon(sFpolosky, polosky[polosky.size() - 1].x + 1363, offsetY));
+		polosky.push_back(Fon(sFpolosky, polosky[polosky.size() - 1].x + 1363, polosky[polosky.size() -1].y));
 		polosky[polosky.size() - 1].sprite.setPosition(polosky[polosky.size() - 1].x - offsetX * 0.1f, polosky[polosky.size() - 1].y);
 	}
 	if (goru[goru.size() - 1].x - offsetX * 0.2f + 1490 < offsetX + 683)
 	{
-		goru.push_back(Fon(sFGoru, goru[goru.size() - 1].x  + 1700 , offsetY+212));
+		goru.push_back(Fon(sFGoru, goru[goru.size() - 1].x  + 1700 , goru[goru.size() - 1].y));
 		goru[goru.size() - 1].sprite.setPosition(goru[goru.size() - 1].x - offsetX * 0.2f, goru[goru.size() - 1].y);
 	}
 	if (stars[stars.size() - 1].x - offsetX * 0.15f + 1608 < offsetX + 683)
 	{
-		stars.push_back(Fon(sFStars, stars[stars.size() - 1].x  + 1608, offsetY));
+		stars.push_back(Fon(sFStars, stars[stars.size() - 1].x  + 1608, stars[stars.size() - 1].y));
 		stars[stars.size() - 1].sprite.setPosition(stars[stars.size() - 1].x - offsetX * 0.15f, stars[stars.size() - 1].y);
 	}
 
@@ -239,7 +258,7 @@ void Camera::moveFon(Level *level)
 	}
 	if (goru[0].x - offsetX * 0.2f > offsetX - 683)
 	{
-		goru.emplace(goru.begin(),Fon(sFGoru, goru[0].x - 1700, offsetY+212));
+		goru.emplace(goru.begin(),Fon(sFGoru, goru[0].x - 1700, offsetY*0.8f+212));
 		goru[0].sprite.setPosition(goru[0].x - offsetX * 0.2f, goru[0].y);
 	}
 	if (stars[0].x - offsetX * 0.15f > offsetX -683)
@@ -247,7 +266,7 @@ void Camera::moveFon(Level *level)
 		stars.emplace(stars.begin(),Fon(sFStars, stars[0].x - 1608, offsetY));
 		stars[0].sprite.setPosition(stars[0].x - offsetX * 0.15f, stars[0].y);
 	}
-	sFPlanet.setPosition(offsetX*0.05f, offsetY);
+	sFPlanet.setPosition(offsetX*0.05f, 0);
 }
 
 Camera::~Camera()
