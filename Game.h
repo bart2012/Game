@@ -5,10 +5,14 @@ class Game
 {
 public:
 	void logic(b2World &world);
-	Game(b2World &world);
+	Game(b2World &world,int location);
 	Level *level;
+	bool game = false;
+	int score = 0;
+	int location;
 	~Game();
 private:
+	void theEnd();
 	void logicCoin(b2World &world);
 	void logicMoveLPlatrotm ();
 	void logicChasm();
@@ -17,8 +21,8 @@ private:
 	//void collisionBullet(b2World &world);
 	//void destroyBullet();
 	float scale = 30;
-	int score = 0;
 	bool canShoot = true;
 };
 
 #endif
+

@@ -4,7 +4,7 @@
 Player::Player(b2World &world, FloatRect rect,float x, float y, float width):_rect(rect), _width(width)
 {
 	_speed = 5;
-	_speedUp = -9;
+	_speedUp = -8.5;
 	_speedAnimation = 0.02;
 	_kilkistCadriv = 6;
 	_numberCadr = 0;
@@ -152,18 +152,11 @@ void Player::gorisontalMoveStop()
 	b2Vec2 vecSpeed = _b2Player->GetLinearVelocity();
 	_b2Player->SetLinearVelocity(b2Vec2(0, vecSpeed.y));
 	_numberCadr = 0;
-	if (directionRignt())
-	{
-		_sPlayer.setTextureRect(IntRect(_rect.left, _rect.top, _width, _rect.height));
-	}
-	if (directionLeft())
-	{
-		_sPlayer.setTextureRect(IntRect(_width, _rect.top, -_width, _rect.height));
-	}
+	setFirstCadr();
 }
 void Player::setSpriteKickback()
 {
-
+	_sPlayer.setTextureRect(IntRect(_rect.width * 6, _rect.top, _width, _rect.height));
 }
 void Player::setAnimationCadr()
 {
@@ -198,8 +191,22 @@ void Player::pistol(b2World &world, std::vector<Bullet> &bullet)
 		}
 		bullet.push_back(Bullet(world, position, _directionRight));
 		time.Reset();
+		setSpriteKickback();
 	}
 }
+
+void Player::setFirstCadr()
+{
+	if (directionRignt())
+	{
+		_sPlayer.setTextureRect(IntRect(_rect.left, _rect.top, _width, _rect.height));
+	}
+	if (directionLeft())
+	{
+		_sPlayer.setTextureRect(IntRect(_width, _rect.top, -_width, _rect.height));
+	}
+}
+
 
 Player::~Player()
 {

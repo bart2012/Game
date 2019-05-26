@@ -56,9 +56,11 @@ void Monster::move()
 	b2Vec2 position = _b2Monster->GetPosition();
 	if (directionRignt() && position.x*scale + _rect.width / 2.f >= _t2)
 	{
+
 		b2Vec2 speed = _b2Monster->GetLinearVelocity();
 		_b2Monster->SetLinearVelocity(-speed);
 		setDirectionLeft();
+
 	}
 	if (directionLeft() && position.x*scale - _rect.width / 2.f <= _t1)
 	{

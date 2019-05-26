@@ -18,7 +18,9 @@ public:
 	std::vector<Ground> ground;
 	std::vector<Bullet> bullet;
 	std::vector<Monster*> monster;
-	Monster *m;
+	b2Body *theEnd;
+	float scale = 30.0;
+	//Monster *m;
 	Level(b2World &world,int location);
 	~Level();
 };

@@ -10,7 +10,10 @@ class Player
 {
 public:
 	Player(b2World &world, FloatRect rect, float x, float y, float width);
-	void move();
+	bool havePistol;
+	b2Timer time;
+	void setFirstCadr();
+	//void move();
 	bool canJump();
 	void setDirectionRight();
 	void setDirectionLeft();
@@ -27,7 +30,6 @@ public:
 	b2Body* b2body();
 	~Player();
 private:
-	b2Timer time;
 	float _width;
 	bool _directionRight = true;
 	Sprite _sPlayer;

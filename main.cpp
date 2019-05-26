@@ -15,29 +15,41 @@ int main()
 {
 	b2World world(b2Vec2(0.f,3.f));
 	RenderWindow window(VideoMode(1366, 768), "Game");
-	Camera camera;
-	Game game(world);
-	Menu menu(window, "1");
+	Camera *camera = nullptr;
+	Game *game = nullptr;
+	Menu *menu = new Menu(window, "1");
 	b2Timer time;
+	bool play = false;
 	while (window.isOpen())
 	{
-		std::cout << std::endl;
-		std::cout << time.GetMilliseconds();
-		std::cout << std::endl;
 		Event e;
 		while (window.pollEvent(e));
 		{
 			if (e.type == Event::Closed)
 				window.close();
 		}
-		game.logic(world);
-		world.Step(1 / 60.f, 8, 3);
+		if (play)
+		{
+			game->logic(world);
+			world.Step(1 / 60.f, 8, 3);
+			camera->draw(world, window, game->level,game->score);
+		}
+		if (!play)
+		{
+			menu->draw(window);
+			if (menu->kliled(window))
+			{
+				play = true;
+				game = new Game(world,menu->startLevel);
+				camera = new Camera(menu->startLevel);
+				delete menu;
+			}
+		}
+		//std::cout << time.GetMilliseconds();
+		//std::cout << std::endl;
+		//std::cout << std::endl;
+		//game.logic(world);
 		time.Reset();
-		/*if (Mouse::isButtonPressed(Mouse::Left))
-			std::cout << "1";*/
-		//menu.kliled(window);
-		//menu.draw(window);
-		camera.draw(world, window, game.level);
 	}
 	return 0;
 }

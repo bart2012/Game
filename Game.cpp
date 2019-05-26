@@ -1,10 +1,10 @@
 #include "Game.h"
-//#include "doublenumberssupport.h"
+#include "doublenumberssupport.h"
 
 
-Game::Game(b2World &world)
+Game::Game(b2World &world,int location): location(location)
 {
-	level = new Level(world, 1);
+	level = new Level(world, location);
 }
 
 void Game::keyPressed(b2World &world)
@@ -21,7 +21,8 @@ void Game::keyPressed(b2World &world)
 	{
 		level->player->jump();
 	}
-	if (!Keyboard::isKeyPressed(Keyboard::D) && !Keyboard::isKeyPressed(Keyboard::A))
+	b2Vec2 speedP = level->player->b2body()->GetLinearVelocity();
+	if (!Keyboard::isKeyPressed(Keyboard::D) && !Keyboard::isKeyPressed(Keyboard::A)&& !DoubleCompare::fuzzyIsNull(speedP.x))
 	{
 		level->player->gorisontalMoveStop();
 	}
@@ -31,7 +32,7 @@ void Game::keyPressed(b2World &world)
 	//	level->player->move();
 	//}
 
-	if (Keyboard::isKeyPressed(Keyboard::RControl)&&canShoot)
+	if (Keyboard::isKeyPressed(Keyboard::RControl)&&canShoot&&level->player->havePistol)
 	{
 		level->player->pistol(world, level->bullet);
 		canShoot = false;
@@ -61,6 +62,11 @@ void Game::logic(b2World &world)
 			level->monster[i]->update();
 		}
 	}
+	if (level->player->time.GetMilliseconds() > 1000)
+	{
+		level->player->setFirstCadr();
+	}
+	theEnd();
 }
 
 void Game::logicCoin(b2World &world)
@@ -239,6 +245,21 @@ void Game::logicBullet(b2World &world)
 //{
 //
 //}
+
+void Game::theEnd()
+{
+	for (b2ContactEdge *ContactList = level->theEnd->GetContactList(); ContactList != nullptr; ContactList = ContactList->next)
+	{
+		if (ContactList->other == level->player->b2body())
+		{
+			b2Vec2 sp = level->player->b2body()->GetPosition();
+			b2Vec2 sp1 = level->theEnd->GetPosition();
+
+			std::cout << "win;";
+		}
+	}
+}
+
 
 Game::~Game()
 {
