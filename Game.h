@@ -7,12 +7,14 @@ public:
 	void logic(b2World &world);
 	Game(b2World &world,int location);
 	Level *level;
-	bool game = false;
+	bool game = true;
 	int score = 0;
 	int location;
+	bool pause = false;
+	//Menu *menu = nullptr;
+	bool theEnd(RenderWindow &window);
 	~Game();
 private:
-	void theEnd();
 	void logicCoin(b2World &world);
 	void logicMoveLPlatrotm ();
 	void logicChasm();

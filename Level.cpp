@@ -71,42 +71,113 @@ Level::Level(b2World &world,int location)
 		player = new Player(world, FloatRect(0, 228, 112, 199), 0, 0, 86);
 		file.open("d:\\Game\\map\\dat\\lvl1", std::ios::binary);
 		player->havePistol = false;
+		b2BodyDef b2Def;
+		b2Def.position.Set(19800 / scale, 300 / scale);
+		b2theEnd = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Fix.density = 1.0;
+		b2theEnd->CreateFixture(&b2Fix);
 	}
 	if (location == 2)
 	{
 		player = new Player(world, FloatRect(0, 0, 112, 199), 0, 0, 103);
 		file.open("d:\\Game\\map\\dat\\lvl2", std::ios::binary);
 		player->havePistol = true;
+		b2BodyDef b2Def;
+		b2Def.position.Set(19800 / scale, 300 / scale);
+		b2theEnd = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Fix.density = 1.0;
+		b2theEnd->CreateFixture(&b2Fix);
 	}
 	if (location == 3)
 	{
-		player = new Player(world, FloatRect(0, 0, 112, 199), 0, 0, 103);
+		player = new Player(world, FloatRect(0, 0, 112, 199), 19000, 0, 103);
 		file.open("d:\\Game\\map\\dat\\lvl3", std::ios::binary);
 		player->havePistol = true;
+		b2BodyDef b2Def;
+		b2Def.position.Set(19800 / scale, 300 / scale);
+		b2theEnd = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Fix.density = 1.0;
+		b2theEnd->CreateFixture(&b2Fix);
+		maxCoins = 0;
 	}
 	if (location == 4)
 	{
 		player = new Player(world, FloatRect(0, 0, 112, 199), 0, 0, 103);
 		file.open("d:\\Game\\map\\dat\\lvl4", std::ios::binary);
 		player->havePistol = true;
+		b2BodyDef b2Def;
+		b2Def.position.Set(19800 / scale, 300 / scale);
+		b2theEnd = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Fix.density = 1.0;
+		b2theEnd->CreateFixture(&b2Fix);
 	}
 	if (location == 5)
 	{
 		player = new Player(world, FloatRect(0, 0, 112, 199), 0, 0, 103);
 		file.open("d:\\Game\\map\\dat\\lvl5", std::ios::binary);
 		player->havePistol = true;
+		b2BodyDef b2Def;
+		b2Def.position.Set(19800 / scale, 300 / scale);
+		b2theEnd = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Fix.density = 1.0;
+		b2theEnd->CreateFixture(&b2Fix);
 	}
 	if (location == 6)
 	{
 		player = new Player(world, FloatRect(0, 0, 112, 199), 0, 0, 103);
 		file.open("d:\\Game\\map\\dat\\lvl6", std::ios::binary);
 		player->havePistol = true;
+		b2BodyDef b2Def;
+		b2Def.position.Set(19800 / scale, 300 / scale);
+		b2theEnd = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Fix.density = 1.0;
+		b2theEnd->CreateFixture(&b2Fix);
 	}
 	if (location == 7)
 	{
 		player = new Player(world, FloatRect(0, 0, 112, 199), 0, 0, 103);
 		file.open("d:\\Game\\map\\dat\\lvl7", std::ios::binary);
 		player->havePistol = true;
+		b2BodyDef b2Def;
+		b2Def.position.Set(19800 / scale, 300 / scale);
+		b2theEnd = world.CreateBody(&b2Def);
+		b2PolygonShape b2Shape;
+		b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+		b2FixtureDef b2Fix;
+		b2Fix.isSensor = true;
+		b2Fix.shape = &b2Shape;
+		b2Fix.density = 1.0;
+		b2theEnd->CreateFixture(&b2Fix);
 	}
 	for (int i = 0; !file.eof(); i++)
 	{
@@ -146,18 +217,16 @@ Level::Level(b2World &world,int location)
 				monster.push_back(new Monster(world, elements[i].x, elements[i].y, elements[i].t1, elements[i].t2));
 				std::cout << elements[i].t1 << std::endl << elements[i].t2 << std::endl << std::endl;
 			}
-			if (elements[i].number == 0)
-			{
-				b2BodyDef b2DefPlayer;
-				b2DefPlayer.position.Set(elements[i].x / scale, elements[i].y / scale);
-				theEnd = world.CreateBody(&b2DefPlayer);
-				b2PolygonShape b2Shape;
-				b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
-				b2FixtureDef b2Fix;
-				b2Fix.isSensor = true;
-				b2Fix.shape = &b2Shape;
-				theEnd->CreateFixture(&b2Fix);
-			}
+				//b2BodyDef b2Def;
+				//b2Def.position.Set(19800 / scale, 300 / scale);
+				//b2theEnd = world.CreateBody(&b2Def);
+				//b2PolygonShape b2Shape;
+				//b2Shape.SetAsBox(40 / 2.f / scale, 5 / scale);
+				//b2FixtureDef b2Fix;
+				//b2Fix.isSensor = true;
+				//b2Fix.shape = &b2Shape;
+				//b2Fix.density = 1.0;
+				//b2theEnd->CreateFixture(&b2Shape,1);
 		}
 	}
 }

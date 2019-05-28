@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "doublenumberssupport.h"
+//#include <SFML/Graphics.hpp>
 
 
 Game::Game(b2World &world,int location): location(location)
@@ -41,32 +42,35 @@ void Game::keyPressed(b2World &world)
 	{
 		canShoot = true;
 	}
+	if (Keyboard::isKeyPressed(Keyboard::Escape)&&!pause)
+	{
+		pause = true;
+	}
 }
 
 void Game::logic(b2World &world)
 {
-	keyPressed(world);
-	logicBullet(world);
-	logicCoin(world);
-	logicMoveLPlatrotm();
-	logicChasm();
-	for (int i = 0; i < level->monster.size(); i++)
-	{
-		if (level->monster[i]->reaction(level->player))
+		if (level->player->time.GetMilliseconds() > 1000)
 		{
-			level->monster[i]->pistol(world, level->bullet);
+			level->player->setFirstCadr();
+		}
+		keyPressed(world);
+		logicBullet(world);
+		logicCoin(world);
+		logicMoveLPlatrotm();
+		logicChasm();
+		for (int i = 0; i < level->monster.size(); i++)
+		{
+			if (level->monster[i]->reaction(level->player))
+			{
+				level->monster[i]->pistol(world, level->bullet);
 
+			}
+			else
+			{
+				level->monster[i]->update();
+			}
 		}
-		else
-		{
-			level->monster[i]->update();
-		}
-	}
-	if (level->player->time.GetMilliseconds() > 1000)
-	{
-		level->player->setFirstCadr();
-	}
-	theEnd();
 }
 
 void Game::logicCoin(b2World &world)
@@ -129,12 +133,13 @@ void Game::logicChasm()
 	for (int i = 0; i < level->ground.size(); i++)
 	{
 		if (level->ground[i].number == 7)
+		{
 			for (b2ContactEdge *ContactList = level->ground[i].b2Body->GetContactList(); ContactList != nullptr; ContactList = ContactList->next)
 				if (ContactList->other == level->player->b2body())
 				{
-					std::cout << "You lossss" << std::endl;
-					level->player->b2body()->SetTransform(b2Vec2(0, 0), 0);
+					game = false;
 				}
+		}
 	}
 }
 
@@ -162,9 +167,9 @@ void Game::logicBullet(b2World &world)
 			if (ContactList->other == level->player->b2body() && ContactList->contact->IsTouching())
 			{
 				world.DestroyBody(level->bullet[i].b2Bullet);
-				level->player->b2body()->SetTransform(b2Vec2(100/scale,400/scale),0);
 				level->bullet.erase(level->bullet.begin() + i);
 				i--;
+				game = false;
 				break;
 			}
 			for (int j = 0; j < level->monster.size(); j++)
@@ -246,16 +251,37 @@ void Game::logicBullet(b2World &world)
 //
 //}
 
-void Game::theEnd()
+bool Game::theEnd(RenderWindow &window)
 {
-	for (b2ContactEdge *ContactList = level->theEnd->GetContactList(); ContactList != nullptr; ContactList = ContactList->next)
+	for (b2ContactEdge *ContactList = level->b2theEnd->GetContactList(); ContactList != nullptr; ContactList = ContactList->next)
 	{
 		if (ContactList->other == level->player->b2body())
 		{
-			b2Vec2 sp = level->player->b2body()->GetPosition();
-			b2Vec2 sp1 = level->theEnd->GetPosition();
-
-			std::cout << "win;";
+			if (location == 3)
+			{
+				Texture tZat, tGun, tText;
+				tZat.loadFromFile("D:/Game/menu/lvl1end/zat.png");
+				tGun.loadFromFile("D:/Game/menu/lvl1end/gun.png");
+				tText.loadFromFile("D:/Game/menu/lvl1end/text.png");
+				Sprite sZat(tZat), sGun(tGun), sText(tText);
+				sText.setPosition(435, 126);
+				sGun.setOrigin(92, 101);
+				sGun.setPosition(682, 322);
+				while (true)
+				{
+					sGun.rotate(1);
+					window.clear();
+					window.draw(sZat);
+					window.draw(sText);
+					window.draw(sGun);
+					window.display();
+					if (Keyboard::isKeyPressed(Keyboard::Enter))
+					{
+						break;
+					}
+				}
+			}
+			return true;
 		}
 	}
 }
@@ -263,4 +289,5 @@ void Game::theEnd()
 
 Game::~Game()
 {
+	delete level;
 }

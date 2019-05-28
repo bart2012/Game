@@ -13,11 +13,12 @@ using namespace sf;
 
 int main()
 {
+	int level=0;
 	b2World world(b2Vec2(0.f,3.f));
 	RenderWindow window(VideoMode(1366, 768), "Game");
 	Camera *camera = nullptr;
 	Game *game = nullptr;
-	Menu *menu = new Menu(window, "1");
+	Menu *menu = new Menu(window, "main");
 	b2Timer time;
 	bool play = false;
 	while (window.isOpen())
@@ -30,20 +31,83 @@ int main()
 		}
 		if (play)
 		{
-			game->logic(world);
-			world.Step(1 / 60.f, 8, 3);
-			camera->draw(world, window, game->level,game->score);
+			if (!game->pause)
+			{
+				game->logic(world);
+				world.Step(1 / 60.f, 8, 3);
+				camera->draw(world, window, game->level, game->score);
+			}
+			if (game->pause&&menu == nullptr)
+			{
+				menu = new Menu(window, "pause");
+				camera->display = false;
+			}
+			if (game->pause)
+			{
+				camera->draw(world, window, game->level, game->score);
+				menu->draw(window);
+				if (menu->kliked(window))
+				{
+					game->pause = false;
+					camera->display = true;
+					if (menu->ExitToMenu)
+					{
+						play = false;
+						delete game;
+						game = nullptr;
+					}
+					delete menu; 
+					menu = nullptr;
+				}		
+			}	
+			if (game!=nullptr&&!game->game)
+			{
+				if (menu == nullptr)
+				{
+					menu = new Menu(window, "los");		
+					delete game;
+					game = nullptr;
+					play = false;
+				}
+			}
+			if (game != nullptr&&game->theEnd(window))
+			{
+				menu = new Menu(window, "final");
+   				menu->finalLoad(game);
+				delete game;
+				game = nullptr;
+				play = false;
+			}
 		}
 		if (!play)
 		{
-			menu->draw(window);
-			if (menu->kliled(window))
+			if (menu == nullptr)
 			{
-				play = true;
-				game = new Game(world,menu->startLevel);
-				camera = new Camera(menu->startLevel);
-				delete menu;
+				menu = new Menu(window, "main");
 			}
+			if (menu->type == "final")
+			{
+				if (menu->kliked(window) && menu->ExitToMenu)
+				{
+					delete menu;
+					menu = nullptr;
+					menu = new Menu(window, "main");
+				}
+			}
+			menu->draw(window);
+			if (menu->kliked(window)&&!menu->ExitToMenu)
+			{
+				if (menu->type == "main")
+				{
+					level = menu->startLevel;
+					camera = new Camera(menu->startLevel);
+				}
+				play = true;
+				menu = nullptr;
+				delete menu;
+				game = new Game(world, level);
+			}
+
 		}
 		//std::cout << time.GetMilliseconds();
 		//std::cout << std::endl;

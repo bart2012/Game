@@ -18,8 +18,9 @@ public:
 	std::vector<Ground> ground;
 	std::vector<Bullet> bullet;
 	std::vector<Monster*> monster;
-	b2Body *theEnd;
-	float scale = 30.0;
+	b2Body *b2theEnd;
+	float scale = 30.0f;
+	int maxCoins;
 	//Monster *m;
 	Level(b2World &world,int location);
 	~Level();

@@ -238,7 +238,10 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level, int score)
 	window.draw(text);
 	sCoins.setPosition(pos.x*scale - offsetX + 510 + _score.str().size() * 15, 33);
 	window.draw(sCoins);
-	window.display();
+	if (display)
+	{
+		window.display();
+	}
 }
 
 void Camera::moveFon(Level *level)

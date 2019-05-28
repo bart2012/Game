@@ -13,6 +13,7 @@ public:
 	Camera(int Location);
 	void draw(b2World &world, RenderWindow &window, Level *level, int score);
 	~Camera();
+	bool display = true;
 private:
 	class Fon
 	{
