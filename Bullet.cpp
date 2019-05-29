@@ -2,13 +2,13 @@
 
 
 
-Bullet::Bullet(b2World &world,b2Vec2 position, bool directionRight):_directionRight(directionRight)
+Bullet::Bullet(b2World *world,b2Vec2 position, bool directionRight):_directionRight(directionRight)
 {
 	b2BodyDef b2Def;
 	b2Def.position.Set(position.x, position.y);
 	b2Def.type = b2_dynamicBody;
 	b2Def.gravityScale = 0;
-	b2Bullet = world.CreateBody(&b2Def);
+	b2Bullet = world->CreateBody(&b2Def);
 	b2PolygonShape b2Shape;
 	b2Shape.SetAsBox(7 / scale, 3 / scale);
 	b2FixtureDef b2Fix;
@@ -21,11 +21,11 @@ Bullet::Bullet(b2World &world,b2Vec2 position, bool directionRight):_directionRi
 
 	if (_directionRight)
 	{
-		b2Bullet->SetLinearVelocity(b2Vec2(0.5, 0));
+		b2Bullet->SetLinearVelocity(b2Vec2(2, 0));
 	}
 	if (!_directionRight)
 	{
-		b2Bullet->SetLinearVelocity(b2Vec2(-0.5, 0));
+		b2Bullet->SetLinearVelocity(b2Vec2(-2, 0));
 	}
 }
 

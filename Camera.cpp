@@ -64,46 +64,29 @@ Camera::Camera(int locatoin) :_location(locatoin)
 		tStina.loadFromFile("D:/Game/loc6/блок.png");
 		tFog.loadFromFile("D:/Game/loc6/fog.png");
 		sFog.setTexture(tFog);
-		fog.push_back(Fon(sFog, 0, 0));
+		fog.push_back(Fon(sFog, 0, 200));
 	}
 
 
 	tCoins.loadFromFile("D:/Game/zagEl/moon.png");
 	tRBullet.loadFromFile("D:/Game/character/RBullet.png");
 	tLBullet.loadFromFile("D:/Game/character/LBullet.png");
-	//tFon.loadFromFile("D:/Game/zagEl/background.png");
-	//sFon.setTexture(tFon);
-	//_tMonster.loadFromFile("D:/Game/character/alien.png");
-	//_sMonster.setTexture(_tMonster);
-	//_sMonster.setTextureRect(IntRect(1, 1, 100, 100));
-	//tRBullet.loadFromFile("D:/Game/zagEl/p.png");
-	//tLBullet.loadFromFile("D:/Game/zagEl/p.png");
 	sLBullet.setTexture(tLBullet);
 	sRBullet.setTexture(tRBullet);
-	//sLBullet.setTextureRect(IntRect(0, 0, 14, 6));
-	//sRBullet.setTextureRect(IntRect(0, 0, 14, 6));
-	//sLBullet.setTextureRect(IntRect(0, 0, 14, 6));
-	//sRBullet.setTextureRect(IntRect(0, 0, 14, 6));
 	sLBullet.setTextureRect(IntRect(0, 11, 24, 6));
-	//sLBullet.setTextureRect(IntRect(0, 0, -14, 6));
 	sRBullet.setTextureRect(IntRect(6, 11, 24, 6));
-	//sRBullet.setTextureRect(IntRect(0, 0, -14, 6));
 	sLBullet.setOrigin(7, 3);
 	sRBullet.setOrigin(22, 3);
 	sCoins.setTexture(tCoins);
 	sGround.setTexture(tGround);
 	sPlatform.setTexture(tPlatform);
 	sFGoru.setTexture(tFGoru);
-	sFGoruPid.setTexture(tFGoruPid);
-	sFGoruSpusk.setTexture(tFGoruSpusk);
 	sFStars.setTexture(tFStars);
 	sFPlanet.setTexture(tFPlanet);
 	sStina.setTexture(tStina);
-	sPid.setTexture(tPid);
-	sSpusk.setTexture(tSpusk);
 	sFpolosky.setTexture(tFpolosky);
 	sFGoru.setPosition(0, 217);
-	goru.push_back(Fon(sFGoru, 0, 212));
+	goru.push_back(Fon(sFGoru, 0, 0));
 	stars.push_back(Fon(sFStars, 0, 0));
 	polosky.push_back(Fon(sFpolosky, 0, 0));
 
@@ -114,7 +97,7 @@ Camera::Camera(int locatoin) :_location(locatoin)
 
 }
 
-void Camera::draw(b2World &world, RenderWindow &window, Level *level, int score)
+void Camera::draw(b2World *world, RenderWindow &window, Level *level, int score)
 {
 	window.clear();
 	b2Vec2 pl = level->player->b2body()->GetPosition();
@@ -143,68 +126,37 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level, int score)
 	}
 
 	window.draw(sFPlanet);
-	//offsetY = pl.y*m - 525;
-	//for (b2Body *it = world.GetBodyList(); it != 0; it = it->GetNext())
-	//{
-	//	if (it->GetUserData() == &player.pl)
-	//	{
-	//		b2Vec2  pos = it->GetPosition();
-	//		it->SetTransform(pos, 0);
-	//		double angle = it->GetAngle();
-	//		player.sPlayer.setPosition(pos.x*m - offsetX, pos.y*m - offsetY+1);
-	//		//std::cout << "p =" << int(pos.x*m - offsetX) << std::endl;
-	//		player.sPlayer.setRotation(angle * 57);
-	//		window.draw(player.sPlayer);
-	//		break;
-	//	}
-
-	//}
 	b2Vec2  pos = level->player->b2body()->GetPosition();
-	//player.b2Player->SetTransform(pos, 0);
-	//float angle = level->player->b2Player->GetAngle();
-	level->player->sprite()->setPosition(pos.x*scale - offsetX, pos.y*scale - offsetYg + 1);
-	//std::cout << "p =" << int(pos.x*m - offsetX) << std::endl;
-	//	level->player->sPlayer.setRotation(angle * 57);
+	level->player->sprite()->setPosition(pos.x*scale - offsetX, pos.y*scale - offsetY + 1);
 	window.draw(*level->player->sprite());
 
 	for (int i = 0; i < level->coins.size(); i++)
 	{
-		sCoins.setPosition(level->coins[i].x - offsetX, level->coins[i].y - offsetYg);
+		sCoins.setPosition(level->coins[i].x - offsetX, level->coins[i].y - offsetY);
 		window.draw(sCoins);
 	}
 	for (int i = 0; i < level->ground.size(); i++)
 	{
 		if (level->ground[i].number == 1)
 		{
-			sGround.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetYg);
+			sGround.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetY);
 			window.draw(sGround);
 		}
 		if (level->ground[i].number == 2)
 		{
-			sPlatform.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetYg);
+			sPlatform.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetY);
 			window.draw(sPlatform);
 		}
 		if (level->ground[i].number == 3)
 		{
 			b2Vec2 posPl = level->ground[i].b2Body->GetPosition();
-			sPlatform.setPosition(posPl.x*scale - level->ground[i].rect.width / 2.f - offsetX, posPl.y*scale - level->ground[i].rect.height / 2.f - offsetYg);
+			sPlatform.setPosition(posPl.x*scale - level->ground[i].rect.width / 2.f - offsetX, posPl.y*scale - level->ground[i].rect.height / 2.f - offsetY);
 			window.draw(sPlatform);
 		}
 		if (level->ground[i].number == 4)
 		{
-			sStina.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetYg);
+			sStina.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetY);
 			window.draw(sStina);
-		}
-		if (level->ground[i].number == 5)
-		{
-			sPid.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetYg);
-			window.draw(sPid);
-		}
-		if (level->ground[i].number == 6)
-		{
-
-			sSpusk.setPosition(level->ground[i].rect.left - offsetX, level->ground[i].rect.top - offsetYg);
-			window.draw(sSpusk);
 		}
 	}
 	for (int i = 0; i < level->bullet.size(); i++)
@@ -213,23 +165,20 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level, int score)
 		if (level->bullet[i].directionRignt())
 		{
 
-			sRBullet.setPosition(position.x*scale - offsetX, position.y*scale - offsetYg);
+			sRBullet.setPosition(position.x*scale - offsetX, position.y*scale - offsetY);
 			window.draw(sRBullet);
 		}
 		if (level->bullet[i].directionLeft())
 		{
-			sLBullet.setPosition(position.x*scale - offsetX, position.y*scale - offsetYg);
+			sLBullet.setPosition(position.x*scale - offsetX, position.y*scale - offsetY);
 			window.draw(sLBullet);
 		}
 	}
 	for (int i = 0; i < level->monster.size(); i++)
 	{
 		b2Vec2  pos = level->monster[i]->b2body()->GetPosition();
-		//std::cout << "  x  " << pos.x*scale<<std::endl<<"y   "<< pos.y*scale<<std::endl;
-		level->monster[i]->sprite()->setPosition(pos.x*scale - offsetX, pos.y*scale - offsetYg);
+		level->monster[i]->sprite()->setPosition(pos.x*scale - offsetX, pos.y*scale - offsetY);
 		window.draw(*level->monster[i]->sprite());
-		//_sMonster.setPosition(pos.x*scale - offsetX, pos.y*scale);
-		//window.draw(_sMonster);
 	}
 	std::ostringstream _score;
 	_score << score;
@@ -246,59 +195,7 @@ void Camera::draw(b2World &world, RenderWindow &window, Level *level, int score)
 
 void Camera::moveFon(Level *level)
 {
-	setY(level);
-
 	b2Vec2 posP = level->player->b2body()->GetPosition();
-	if (650 + offsetYg < posP.y*scale - 99.5&&DoubleCompare::fuzzyIsNull(offsetYl))
-	{
-		offsetYg += 500;
-		polosky.clear();
-		goru.clear();
-		stars.clear();
-		fog.clear();
-		polosky.push_back(Fon(sFpolosky, posP.x*scale - 683 - offsetX, offsetYg - 130));
-		goru.push_back(Fon(sFGoru, posP.x*scale - 683 - offsetX, offsetYg - 130 + 212));
-		stars.push_back(Fon(sFStars, posP.x*scale - 683 - offsetX, offsetYg - 130));
-		if (_location == 7)
-		{
-			fog.push_back(Fon(sFog, posP.x*scale - 683 - offsetX, offsetYg - 130));
-		}
-	}
-
-	if (500+offsetYg <posP.y*scale + 99.5,5&&!DoubleCompare::fuzzyIsNull(offsetYl))
-	{
-		offsetYl = 0;
-		offsetYg += 300;
-		polosky.clear();
-		goru.clear();
-		stars.clear();
-		fog.clear();
-		polosky.push_back(Fon(sFpolosky, posP.x*scale - 683 - offsetX, offsetYg - 130));
-		goru.push_back(Fon(sFGoru, posP.x*scale - 683 - offsetX, offsetYg - 130 + 212));
-		stars.push_back(Fon(sFStars, posP.x*scale - 683 - offsetX, offsetYg - 130));
-		if (_location == 7)
-		{
-			fog.push_back(Fon(sFog, posP.x*scale - 683 - offsetX, offsetYg - 130));
-		}
-	}
-
-	//if (offsetYg - 200 > posP.y*scale - 99.5)
-	//{
-	//	offsetYl = -300;
-	//	offsetYg -= 300;
-	//	polosky.clear();
-	//	goru.clear();
-	//	stars.clear();
-	//	fog.clear();
-	//	polosky.push_back(Fon(sFpolosky, posP.x*scale - 683 - offsetX, offsetYg));
-	//	goru.push_back(Fon(sFGoru, posP.x*scale - 683 - offsetX, offsetYg + 212));
-	//	stars.push_back(Fon(sFStars, posP.x*scale - 683 - offsetX, offsetYg));
-	//	if (_location == 7)
-	//	{
-	//		fog.push_back(Fon(sFog, posP.x*scale - 683 - offsetX, offsetYg));
-	//	}
-	//}
-
 
 	if (polosky[polosky.size() - 1].x - offsetX * 0.1f + 1363 < offsetX + 683)
 	{
@@ -359,39 +256,6 @@ void Camera::moveFon(Level *level)
 		}
 	}
 
-}
-
-void Camera::setY(Level *level)
-{
-	for (int i = 0; i < level->ground.size(); i++)
-	{
-		if (level->ground[i].number == 4 || level->ground[i].number == 1)
-		{
-			for (b2ContactEdge *contactList = level->ground[i].b2Body->GetContactList(); contactList != nullptr; contactList = contactList->next)
-			{
-				if (contactList->other == level->player->b2body())
-				{
-					b2Vec2 posP = level->player->b2body()->GetPosition();
-					b2Vec2 posG = level->ground[i].b2Body->GetPosition();
-					if ((DoubleCompare::doubleEquals(posG.y*scale - posP.y*scale, 477, 1)&& !DoubleCompare::doubleEquals(offsetYg, posP.y*scale - 500, 1) && level->ground[i].number == 4) || (DoubleCompare::doubleEquals(posG.y*scale - posP.y*scale,356.5,1) && !DoubleCompare::doubleEquals(offsetYg, posP.y*scale - 500,1) && level->ground[i].number == 1))
-					{
-						polosky.clear();
-						goru.clear();
-						stars.clear();
-						offsetYg = posP.y*scale-500;
-						polosky.push_back(Fon(sFpolosky, posP.x*scale - 683 - offsetX, offsetYg));
-						goru.push_back(Fon(sFGoru, posP.x*scale - 683 - offsetX , offsetYg-130 + 212));
-						stars.push_back(Fon(sFStars, posP.x*scale - 683 - offsetX , offsetYg-130));
-						if (_location == 7)
-						{
-							fog.push_back(Fon(sFog, posP.x*scale - 683 - offsetX, offsetYg));
-						}
-						return;
-					}
-				}
-			}
-		}
-	}
 }
 
 Camera::~Camera()

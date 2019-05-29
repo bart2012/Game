@@ -7,7 +7,7 @@ class Bullet
 {
 public:
 	b2Body *b2Bullet;
-	Bullet(b2World &world,b2Vec2 position, bool directionRight);
+	Bullet(b2World *world,b2Vec2 position, bool directionRight);
 	bool directionRignt();
 	bool directionLeft();
 	std::string st = "st";

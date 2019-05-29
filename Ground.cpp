@@ -8,14 +8,14 @@
 // 5 - підйом
 // 6 - спуск
 // 7 - яма
-Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(number)
+Ground::Ground(b2World *world,FloatRect rect,int number):rect(rect),number(number)
 {
 	if (number == 1 || number == 2 || number == 4)
 	{
 		b2BodyDef b2Def;
 		b2Def.type = b2_staticBody;
 		b2Def.position.Set((rect.left + rect.width / 2.f) / scale, (rect.top + rect.height / 2.f) / scale);
-		b2Body = world.CreateBody(&b2Def);
+		b2Body = world->CreateBody(&b2Def);
 		b2PolygonShape b2Shape;
 		b2Shape.SetAsBox(rect.width / 2.f / scale, rect.height / 2.f / scale);
 		b2FixtureDef b2;
@@ -40,7 +40,7 @@ Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(numbe
 		vertices[3].Set(-649 / m, 579 / m);*/
 		b2PolygonShape b2Shape;
 		b2Shape.Set(vertices, 4);
-		b2Body = world.CreateBody(&b2Def);
+		b2Body = world->CreateBody(&b2Def);
 		b2Body->CreateFixture(&b2Shape, 0);
 	}
 	if (number == 6)
@@ -58,7 +58,7 @@ Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(numbe
 		vertices[3].Set(-649 / m, 579 / m);*/
 		b2PolygonShape b2Shape;
 		b2Shape.Set(vertices, 4);
-		b2Body = world.CreateBody(&b2Def);
+		b2Body = world->CreateBody(&b2Def);
 		b2FixtureDef b2;
 		b2.density = 1.0;
 		b2.friction = 0.3;
@@ -69,7 +69,7 @@ Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(numbe
 	{
 		b2BodyDef b2Def;
 		b2Def.position.Set((rect.left + rect.width / 2.f) / scale,(rect.top + rect.height / 2.f) / scale);
-		b2Body = world.CreateBody(&b2Def);
+		b2Body = world->CreateBody(&b2Def);
 		b2PolygonShape b2Shape;
 		b2Shape.SetAsBox(rect.width / 2.f / scale, rect.height / 2.f / scale);
 		b2FixtureDef b2Fix;
@@ -79,12 +79,12 @@ Ground::Ground(b2World &world,FloatRect rect,int number):rect(rect),number(numbe
 	}
 }
 
-Ground::Ground(b2World &world, FloatRect rect, int number, int t1, int t2, char vector) :rect(rect), number(number), t1(t1), t2(t2), vector(vector)
+Ground::Ground(b2World *world, FloatRect rect, int number, int t1, int t2, char vector) :rect(rect), number(number), t1(t1), t2(t2), vector(vector)
 {
 	b2BodyDef b2Def;
 	b2Def.position.Set((rect.left + rect.width / 2.f) / scale, (rect.top + rect.height / 2.f) / scale);
 	b2Def.type = b2_kinematicBody;
-	b2Body = world.CreateBody(&b2Def);
+	b2Body = world->CreateBody(&b2Def);
 	b2PolygonShape b2Shape;
 	b2Shape.SetAsBox(rect.width / 2.f / scale, (rect.height-1) / 2.f / scale,b2Vec2(0,0.5 / scale),0);
 	b2PolygonShape b2Shape2;

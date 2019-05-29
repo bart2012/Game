@@ -21,8 +21,7 @@ public:
 	b2Body *b2theEnd;
 	float scale = 30.0f;
 	int maxCoins;
-	//Monster *m;
-	Level(b2World &world,int location);
+	Level(b2World *world,int location);
 	~Level();
 };
 

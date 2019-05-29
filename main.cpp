@@ -14,7 +14,7 @@ using namespace sf;
 int main()
 {
 	int level=0;
-	b2World world(b2Vec2(0.f,3.f));
+	b2World *world = nullptr;
 	RenderWindow window(VideoMode(1366, 768), "Game");
 	Camera *camera = nullptr;
 	Game *game = nullptr;
@@ -34,7 +34,7 @@ int main()
 			if (!game->pause)
 			{
 				game->logic(world);
-				world.Step(1 / 60.f, 8, 3);
+				world->Step(1 / 60.f, 8, 3);
 				camera->draw(world, window, game->level, game->score);
 			}
 			if (game->pause&&menu == nullptr)
@@ -55,6 +55,8 @@ int main()
 						play = false;
 						delete game;
 						game = nullptr;
+						delete world;
+						world = nullptr;
 					}
 					delete menu; 
 					menu = nullptr;
@@ -67,6 +69,8 @@ int main()
 					menu = new Menu(window, "los");		
 					delete game;
 					game = nullptr;
+					delete world;
+					world = nullptr;
 					play = false;
 				}
 			}
@@ -75,6 +79,8 @@ int main()
 				menu = new Menu(window, "final");
    				menu->finalLoad(game);
 				delete game;
+				delete world;
+				world = nullptr;
 				game = nullptr;
 				play = false;
 			}
@@ -103,16 +109,14 @@ int main()
 					camera = new Camera(menu->startLevel);
 				}
 				play = true;
-				menu = nullptr;
 				delete menu;
+				menu = nullptr;
+				world = new b2World(b2Vec2(0.f, 3.f));
 				game = new Game(world, level);
 			}
 
 		}
 		//std::cout << time.GetMilliseconds();
-		//std::cout << std::endl;
-		//std::cout << std::endl;
-		//game.logic(world);
 		time.Reset();
 	}
 	return 0;

@@ -2,7 +2,7 @@
 #include "doublenumberssupport.h"
 
 
-Monster::Monster(b2World &world, float x, float y, int t1, int t2):_t1(t1),_t2(t2)
+Monster::Monster(b2World *world, float x, float y, int t1, int t2):_t1(t1),_t2(t2)
 {
 	_speed = 1;
 	_speedAnimation = 0.005f;
@@ -18,13 +18,13 @@ Monster::Monster(b2World &world, float x, float y, int t1, int t2):_t1(t1),_t2(t
 	_directionRight = true;
 }
 
-void Monster::createb2Body(b2World &world, float x, float y)
+void Monster::createb2Body(b2World *world, float x, float y)
 {
 	b2BodyDef b2DefMonster;
 	b2DefMonster.fixedRotation = true;
 	b2DefMonster.type = b2_dynamicBody;
 	b2DefMonster.position.Set(x / scale, y / scale);
-	_b2Monster = world.CreateBody(&b2DefMonster);
+	_b2Monster = world->CreateBody(&b2DefMonster);
 	b2PolygonShape b2ShapeMonster;
 	b2ShapeMonster.SetAsBox(_width / 2.f/ scale, _rect.height/ 2.f / scale);
 	b2FixtureDef b2Fix;
@@ -86,7 +86,7 @@ void Monster::setAnimationCadr()
 
 }
 
-void Monster::pistol(b2World &world, std::vector<Bullet> &bullet)
+void Monster::pistol(b2World *world, std::vector<Bullet> &bullet)
 {
 	if (time.GetMilliseconds() >= 1000)
 	{

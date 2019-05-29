@@ -9,11 +9,10 @@ using namespace sf;
 class Player
 {
 public:
-	Player(b2World &world, FloatRect rect, float x, float y, float width);
+	Player(b2World *world, FloatRect rect, float x, float y, float width);
 	bool havePistol;
 	b2Timer time;
 	void setFirstCadr();
-	//void move();
 	bool canJump();
 	void setDirectionRight();
 	void setDirectionLeft();
@@ -25,7 +24,7 @@ public:
 	void gorisontalMoveStop();
 	void setSpriteKickback();
 	void setAnimationCadr();
-	void pistol(b2World &world,std::vector<Bullet> &bullet);
+	void pistol(b2World *world,std::vector<Bullet> &bullet);
 	Sprite* sprite();
 	b2Body* b2body();
 	~Player();
@@ -42,7 +41,7 @@ private:
 	float _numberCadr;
 	float scale = 30;
 	int _kilkistCadriv;
-	void createb2Body(b2World &world, float x, float y);
+	void createb2Body(b2World *world, float x, float y);
 	void createGrafic(float x, float y);
 	std::string pl = "pverx";
 	std::string pl2 = "pdown";

@@ -9,9 +9,9 @@ using namespace sf;
 class Camera
 {
 public:
-	Texture tFog,tFon,tLBullet,tRBullet, tGround, tCoins, tPlatform, tRocket, tFGoru,tFPlanet,tFStars,tFpolosky,tStina,tFGoruPid,tFGoruSpusk,tSpusk,tPid;
-	Camera(int Location);
-	void draw(b2World &world, RenderWindow &window, Level *level, int score);
+	Texture tFog,tFon,tLBullet,tRBullet, tGround, tCoins, tPlatform, tFGoru,tFPlanet,tFStars,tFpolosky,tStina;
+	Camera(int location);
+	void draw(b2World *world, RenderWindow &window, Level *level, int score);
 	~Camera();
 	bool display = true;
 private:
@@ -31,9 +31,9 @@ private:
 	};
 	float scale = 30;
 	float offsetX = 0;
-	float offsetYg = 0;
+	float offsetY = 0;
 	float offsetYl = 0;
-	Sprite sFog,sFon,sLBullet,sRBullet, sCoins, sGround,sPlatform, sRocket, sStar, sMountain, sLocation, sFGoru, sFPlanet, sFStars, sFpolosky, sStina, sFGoruPid, sFGoruSpusk, sSpusk, sPid;
+	Sprite sFog,sFon,sLBullet,sRBullet, sCoins, sGround,sPlatform, sMountain, sLocation, sFGoru, sFPlanet, sFStars, sFpolosky, sStina;
 	void moveFon(Level *level);
 	std::vector <Fon>  goru;
 	std::vector <Fon>  stars;
@@ -42,7 +42,6 @@ private:
 	Text text;
 	Font font;
 	int _location;
-	void setY(Level *level);
 };
 
 #endif

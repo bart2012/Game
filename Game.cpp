@@ -1,14 +1,13 @@
 #include "Game.h"
 #include "doublenumberssupport.h"
-//#include <SFML/Graphics.hpp>
 
 
-Game::Game(b2World &world,int location): location(location)
+Game::Game(b2World *world,int location): location(location)
 {
 	level = new Level(world, location);
 }
 
-void Game::keyPressed(b2World &world)
+void Game::keyPressed(b2World *world)
 {
 	if (Keyboard::isKeyPressed(Keyboard::D))
 	{
@@ -27,12 +26,6 @@ void Game::keyPressed(b2World &world)
 	{
 		level->player->gorisontalMoveStop();
 	}
-	//if (!DoubleCompare::fuzzyIsNull(level->player->dx) || !DoubleCompare::fuzzyIsNull(level->player->dy))
-	////if(level->player->dx!=0|| level->player->dy!=0)
-	//{
-	//	level->player->move();
-	//}
-
 	if (Keyboard::isKeyPressed(Keyboard::RControl)&&canShoot&&level->player->havePistol)
 	{
 		level->player->pistol(world, level->bullet);
@@ -48,7 +41,7 @@ void Game::keyPressed(b2World &world)
 	}
 }
 
-void Game::logic(b2World &world)
+void Game::logic(b2World *world)
 {
 		if (level->player->time.GetMilliseconds() > 1000)
 		{
@@ -64,7 +57,6 @@ void Game::logic(b2World &world)
 			if (level->monster[i]->reaction(level->player))
 			{
 				level->monster[i]->pistol(world, level->bullet);
-
 			}
 			else
 			{
@@ -73,7 +65,7 @@ void Game::logic(b2World &world)
 		}
 }
 
-void Game::logicCoin(b2World &world)
+void Game::logicCoin(b2World *world)
 {
 	for (b2ContactEdge *ContactList = level->player->b2body()->GetContactList(); ContactList != nullptr; ContactList = ContactList->next)
 	{
@@ -81,7 +73,7 @@ void Game::logicCoin(b2World &world)
 		{
 			if (ContactList->other == level->coins[i].b2Coins&&ContactList->contact->IsTouching())
 			{
-				world.DestroyBody(level->coins[i].b2Coins);
+				world->DestroyBody(level->coins[i].b2Coins);
 				score += 100;
 				std::cout << score << std::endl;
 				level->coins.erase(level->coins.begin() + i);
@@ -112,17 +104,6 @@ void Game::logicMoveLPlatrotm()
 				b2Vec2  Velocity = level->ground[i].b2Body->GetLinearVelocity();
 				level->ground[i].b2Body->SetLinearVelocity(-Velocity);
 			}
-
-			b2Vec2 platformSpeed = level->ground[i].b2Body->GetLinearVelocity();
-			b2Vec2 playerSpeed = level->player->b2body()->GetLinearVelocity();
-			for (b2ContactEdge *ContactList = level->ground[i].b2Body->GetContactList(); ContactList != nullptr; ContactList = ContactList->next)
-			{
-				if (ContactList->other == level->player->b2body())
-				{
-					//ContactList->contact->SetFriction(10);
-					//level->player->b2Player->SetLinearVelocity(b2Vec2(platformSpeed.x + playerSpeed.x, playerSpeed.y));
-				}
-			}
 		}
 	}
 
@@ -143,7 +124,7 @@ void Game::logicChasm()
 	}
 }
 
-void Game::logicBullet(b2World &world)
+void Game::logicBullet(b2World *world)
 {
 	for (int i = 0; i < level->bullet.size(); i++)
 	{
@@ -155,7 +136,7 @@ void Game::logicBullet(b2World &world)
 		posPlayer.y *= scale;
 		if (posBullet.x > posPlayer.x + 700 || posBullet.x < posPlayer.x - 700)
 		{
-			world.DestroyBody(level->bullet[i].b2Bullet);
+			world->DestroyBody(level->bullet[i].b2Bullet);
 			level->bullet.erase(level->bullet.begin() + i);
 			i--;
 			break;
@@ -166,7 +147,7 @@ void Game::logicBullet(b2World &world)
 		{
 			if (ContactList->other == level->player->b2body() && ContactList->contact->IsTouching())
 			{
-				world.DestroyBody(level->bullet[i].b2Bullet);
+				world->DestroyBody(level->bullet[i].b2Bullet);
 				level->bullet.erase(level->bullet.begin() + i);
 				i--;
 				game = false;
@@ -176,8 +157,8 @@ void Game::logicBullet(b2World &world)
 			{
 				if (ContactList->other == level->monster[j]->b2body() && ContactList->contact->IsTouching())
 				{
-					world.DestroyBody(level->bullet[i].b2Bullet);
-					world.DestroyBody(level->monster[j]->b2body());
+					world->DestroyBody(level->bullet[i].b2Bullet);
+					world->DestroyBody(level->monster[j]->b2body());
 					level->bullet.erase(level->bullet.begin() + i);
 					level->monster.erase(level->monster.begin() + j);
 					ContactList->other =  nullptr;
@@ -191,8 +172,8 @@ void Game::logicBullet(b2World &world)
 			{
 				if (i!=j&&ContactList->other == level->bullet[j].b2Bullet && ContactList->contact->IsTouching())
 				{
-					world.DestroyBody(level->bullet[i].b2Bullet);
-					world.DestroyBody(level->bullet[j].b2Bullet);
+					world->DestroyBody(level->bullet[i].b2Bullet);
+					world->DestroyBody(level->bullet[j].b2Bullet);
 					level->bullet.erase(level->bullet.begin() + i);
 					level->bullet.erase(level->bullet.begin() + j-1);
 					ContactList->other = nullptr;
@@ -224,7 +205,7 @@ void Game::logicBullet(b2World &world)
 					//	std::cout << *userData << std::endl;
 					//	std::cout << *userData1 << std::endl;
 					//}
-					world.DestroyBody(level->bullet[i].b2Bullet);
+					world->DestroyBody(level->bullet[i].b2Bullet);
 					level->bullet.erase(level->bullet.begin() + i);
 					i--;
 					//std::string* str1 = static_cast<std::string*> (ContactList->contact->GetFixtureA()->GetUserData());
@@ -239,7 +220,7 @@ void Game::logicBullet(b2World &world)
 	}
 }
 
-//void Game::collisionBullet(b2World &world)
+//void Game::collisionBullet(b2World *world)
 //{
 //	for (int i = 0; i < level->bullet.size(); i++)
 //	{
@@ -257,7 +238,7 @@ bool Game::theEnd(RenderWindow &window)
 	{
 		if (ContactList->other == level->player->b2body())
 		{
-			if (location == 3)
+			if (location == 1)
 			{
 				Texture tZat, tGun, tText;
 				tZat.loadFromFile("D:/Game/menu/lvl1end/zat.png");

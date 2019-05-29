@@ -10,7 +10,7 @@ public:
 	float x;
 	float y;
 	std::string p = "coin";
-	Coins(b2World &world, float x, float y);
+	Coins(b2World *world, float x, float y);
 	~Coins();
 private:
 	float scale = 30;

@@ -1,24 +1,24 @@
 #include "Player.h"
 #include "doublenumberssupport.h"
 
-Player::Player(b2World &world, FloatRect rect,float x, float y, float width):_rect(rect), _width(width)
+Player::Player(b2World *world, FloatRect rect,float x, float y, float width):_rect(rect), _width(width)
 {
 	_speed = 5;
 	_speedUp = -8.5;
-	_speedAnimation = 0.02;
+	_speedAnimation = 0.06;
 	_kilkistCadriv = 6;
 	_numberCadr = 0;
 	createb2Body(world,x,y);
 	createGrafic(x,y);
 }
 
-void Player::createb2Body(b2World &world, float x, float y)
+void Player::createb2Body(b2World *world, float x, float y)
 {
 	b2BodyDef b2DefPlayer;
 	b2DefPlayer.fixedRotation = true;
 	b2DefPlayer.type = b2_dynamicBody;
 	b2DefPlayer.position.Set(x / scale, y / scale);
-	_b2Player = world.CreateBody(&b2DefPlayer);
+	_b2Player = world->CreateBody(&b2DefPlayer);
 	b2PolygonShape b2ShapePlayerP;
 	b2ShapePlayerP.SetAsBox(_width / 2.f / scale, (_rect.height / 2.f - 10)/ scale,b2Vec2(0,10 / scale),0);
 	b2FixtureDef b2FixPlayer;
@@ -46,55 +46,13 @@ void Player::createGrafic(float x, float y)
 	_sPlayer.setOrigin(_width / 2.f, _rect.height / 2.f);
 }
 
-//void Player::move()
-//{
-//	b2Vec2 vecspeed = _b2Player->GetLinearVelocity();
-//	if (dy < 0)
-//	{
-//		_b2Player->SetLinearVelocity(b2Vec2(vecspeed.x,_speedUp));
-//		dy = 0;
-//	}
-//	if (dx != 0)
-//	{
-//		b2Vec2 vecspeed = _b2Player->GetLinearVelocity();
-//		if (vecspeed.x<3&& vecspeed.x > 3)
-//		_b2Player->SetLinearVelocity(b2Vec2(vecspeed.x + dx, vecspeed.y));
-//		else 
-//			_b2Player->SetLinearVelocity(b2Vec2(dx, vecspeed.y));
-//		b2Player->SetAngularDamping(dx, vecspeed.y);
-//		b2Player->ApplyLinearImpulseToCenter(b2Vec2(dx, vecspeed.y), true);
-//		_numberCadr += _speedAnimation;
-//		if (_numberCadr > kilkist_cadriv)
-//			_numberCadr = 0;
-//		if (dx > 0)
-//			_sPlayer.setTextureRect(IntRect(_rect.width*int(_numberCadr), _rect.top, _rect.width, _rect.height));
-//		else
-//			_sPlayer.setTextureRect(IntRect(_rect.width*int(_numberCadr+1), _rect.top, -_rect.width, _rect.height));
-//		dx = 0;
-//	}
-//
-//
-//}
-
 bool Player::canJump()
 {
 	b2Vec2 speed = _b2Player->GetLinearVelocity();
-	//std::cout << speed.y << std::endl;
 	b2ContactEdge *contactList = _b2Player->GetContactList();
-		//std::string str = "LPlatform";
-		//b2Vec2 speed = b2Player->GetLinearVelocity();
-		//std::cout << speed.y<<std::endl;
 		if (contactList != nullptr)
 		{
-			//std::cout << contactList->contact->GetFixtureA()->GetUserData() << "  1 " << std::endl;
-			//std::cout << contactList->contact->GetFixtureB()->GetUserData() << "  2 " << std::endl;
 			std::string* str1 = static_cast<std::string*> (contactList->contact->GetFixtureA()->GetUserData());
-			//std::string* str2 = static_cast<std::string*> (contactList->contact->GetFixtureB()->GetUserData());
-			//if (str1 != nullptr)
-			//std::cout << *str1 << "  1 " << std::endl;
-			//if (str2 != nullptr)
-			//std::cout << *str2 << "  2 " << std::endl;
-			//std::cout << contactList->contact->GetFriction()<< "  3 " << std::endl;
 			if (DoubleCompare::doubleEquals(0, speed.y, 0.55) && contactList->contact->GetFixtureB()->GetUserData() != nullptr)
 			{
 				return true;
@@ -156,7 +114,14 @@ void Player::gorisontalMoveStop()
 }
 void Player::setSpriteKickback()
 {
-	_sPlayer.setTextureRect(IntRect(_rect.width * 6, _rect.top, _width, _rect.height));
+	if (directionRignt())
+	{
+		_sPlayer.setTextureRect(IntRect(_rect.width * 6, _rect.top, _width, _rect.height));
+	}
+	if (directionLeft())
+	{
+		_sPlayer.setTextureRect(IntRect(_rect.width * 7, _rect.top, -_width, _rect.height));
+	}
 }
 void Player::setAnimationCadr()
 {
@@ -174,7 +139,7 @@ b2Body* Player::b2body()
 	return _b2Player;
 }
 
-void Player::pistol(b2World &world, std::vector<Bullet> &bullet)
+void Player::pistol(b2World *world, std::vector<Bullet> &bullet)
 {
 	if (time.GetMilliseconds() > 1000)
 	{

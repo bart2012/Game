@@ -9,7 +9,7 @@ using namespace sf;
 class Monster
 {
 public:
-	Monster(b2World &world,float x, float y, int t1, int t2);
+	Monster(b2World *world,float x, float y, int t1, int t2);
 	~Monster();
 	void update();
 	Sprite* sprite();
@@ -18,7 +18,7 @@ public:
 	void setDirectionLeft();
 	bool directionRignt() const;
 	bool directionLeft() const;
-	void pistol(b2World &world, std::vector<Bullet> &bullet);
+	void pistol(b2World *world, std::vector<Bullet> &bullet);
 	Texture _tMonster;
 	Sprite _sMonster;
 	bool reaction(Player *player);
@@ -35,7 +35,7 @@ private:
 	b2Body *_b2Monster;
 	int _t1;
 	int _t2;
-	void createb2Body(b2World &world, float x, float y);
+	void createb2Body(b2World *world, float x, float y);
 	void createGrafic(float x, float y);
 	std::string _name = "monster";
 	void move();

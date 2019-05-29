@@ -18,10 +18,6 @@ Menu::Menu(sf::RenderWindow &window, std::string type):type(type)
 		tBLoc5.loadFromFile("D:/Game/menu/level/5.png");
 		tBLoc6.loadFromFile("D:/Game/menu/level/6.png");
 		tBLoc7.loadFromFile("D:/Game/menu/level/7.png");
-		//tBSoundOn.loadFromFile("D:/Game/menu/головне/налаштування/звукивкл.png");
-		//tBSoundOff.loadFromFile("D:/Game/menu/головне/налаштування/звукивикл.png");
-		//tBMusicOn.loadFromFile("D:/Game/menu/головне/налаштування/музикавкл.png");
-		//tBMusicOff.loadFromFile("D:/Game/menu/головне/налаштування/музикавикл.png");
 
 		sBLoc1.setTexture(tBLoc1);
 		sBLoc2.setTexture(tBLoc2);
@@ -139,7 +135,6 @@ Menu::Menu(sf::RenderWindow &window, std::string type):type(type)
 	if (type == "pause")
 	{
 		tZat.loadFromFile("D:/Game/menu/pause/zat.png");
-		//tBPNewGame.loadFromFile("D:/Game/menu/pause/zat.png");
 		tBContinue.loadFromFile("D:/Game/menu/pause/continue.png");
 		tBExittoMainMenu.loadFromFile("D:/Game/menu/pause/exittomaimmenu.png");
 		sZat.setTexture(tZat);
@@ -241,13 +236,8 @@ bool Menu::kliked(sf::RenderWindow &window)
 		{
 			sf::Vector2i posMouse = sf::Mouse::getPosition();
 			sf::Vector2i posWindow = window.getPosition();
-			std::cout << posWindow.x << std::endl;
-			std::cout << posWindow.y<< std::endl;
-			//posWindow.y += 8;
 			posWindow.y += 29;
 			posWindow.x += 8;
-			//std::cout <<"x"<< vec.x;
-			//std::cout << "y" << vec.y;
 			for (int i = 0; i < activeButton.size(); i++)
 			{
 				if (posMouse.x - posWindow.x > activeButton[i].rect.left && posMouse.x - posWindow.x < activeButton[i].rect.left + activeButton[i].rect.width && posMouse.y - posWindow.y> activeButton[i].rect.top && posMouse.y - posWindow.y < activeButton[i].rect.top + activeButton[i].rect.height)
@@ -279,7 +269,6 @@ bool Menu::kliked(sf::RenderWindow &window)
 						{
 							window.close();
 						}
-						std::cout << "1" << std::endl;
 						if (activeButton[i].name == "lvl1")
 						{
 							startLevel = 1;
